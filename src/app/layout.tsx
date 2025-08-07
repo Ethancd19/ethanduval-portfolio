@@ -1,8 +1,10 @@
 // src/app/layout.tsx
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
+import NavBar from "./NavBar";
+import { ThemeProvider } from "./ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,19 +27,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <header style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
-          <nav style={{ display: "flex", gap: "1rem" }}>
-            <Link href="/">Home</Link>
-            <Link href="/about">About</Link>
-            <Link href="/projects">Projects</Link>
-            <Link href="/contact">Contact</Link>
-          </nav>
-        </header>
-        <main style={{ padding: "1rem" }}>{children}</main>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider>
+          <NavBar />
+          <main style={{ padding: "1rem" }}>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );
