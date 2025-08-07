@@ -3,13 +3,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --accent: #ff6b00;
-}
-
-@theme inline {
+  --accent: #ff6b00; /* orange */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
+  --color-accent-transparent: rgba(255, 107, 0, 0.1);
+  --color-accent-border: rgba(255, 107, 0, 0.4);
+  --color-accent-bg: rgba(255, 107, 0, 0.06);
+  --color-accent-glow: rgba(255, 107, 0, 0.05);
+  --color-card-bg: rgba(255, 255, 255, 0.8);
+  --color-shadow: rgba(0, 0, 0, 0.1);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -18,7 +21,16 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --accent: #00ffd1;
+    --accent: #00ffd1; /* teal */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-accent: var(--accent);
+    --color-accent-transparent: rgba(0, 255, 209, 0.1);
+    --color-accent-border: rgba(0, 255, 209, 0.4);
+    --color-accent-bg: rgba(0, 255, 209, 0.06);
+    --color-accent-glow: rgba(0, 255, 209, 0.05);
+    --color-card-bg: rgba(0, 0, 0, 0.6);
+    --color-shadow: rgba(0, 0, 0, 0.3);
   }
 }
 

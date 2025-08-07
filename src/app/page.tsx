@@ -1,10 +1,19 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 export default function Home() {
   const [tiltStyle, setTiltStyle] = useState({})
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -17,76 +26,295 @@ export default function Home() {
     const deltaX = (x - centerX) / centerX
     const deltaY = (y - centerY) / centerY
 
-    const rotateX = deltaY * 6
-    const rotateY = deltaX * -6
+    const rotateX = deltaY * 8
+    const rotateY = deltaX * -8
 
     setTiltStyle({
-      transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+      transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`,
       transition: 'transform 0.4s ease',
     })
   }
 
   const handleMouseLeave = () => {
     setTiltStyle({
-      transform: 'rotateX(0deg) rotateY(0deg)',
-      transition: 'transform 0.4s ease',
+      transform: 'rotateX(0deg) rotateY(0deg) translateZ(0px)',
+      transition: 'transform 0.8s ease',
     })
   }
 
   return (
     <div
       style={{
+        position: 'relative',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
-        background: 'radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01))',
+        minHeight: '100vh',
+        background: `
+          radial-gradient(circle at 20% 30%, var(--color-accent-transparent) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, var(--color-accent-transparent) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+          var(--color-background)
+        `,
+        overflow: 'hidden',
       }}
     >
+      {/* Ambient floating elements */}
       <div
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ perspective: '1000px' }}
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '10%',
+          width: '200px',
+          height: '200px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, var(--color-accent-transparent), transparent 70%)`,
+          filter: 'blur(40px)',
+          animation: 'float 6s ease-in-out infinite',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: '60%',
+          right: '15%',
+          width: '150px',
+          height: '150px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, var(--color-accent-transparent), transparent 70%)`,
+          filter: 'blur(30px)',
+          animation: 'float 8s ease-in-out infinite reverse',
+        }}
+      />
+      
+      {/* Mouse follower */}
+      <div
+        style={{
+          position: 'fixed',
+          top: mousePos.y - 100,
+          left: mousePos.x - 100,
+          width: '200px',
+          height: '200px',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, var(--color-accent-glow), transparent 70%)`,
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+          transition: 'all 0.3s ease',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Main content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '2rem',
+          maxWidth: '1200px',
+          width: '100%',
+          padding: '2rem',
+        }}
       >
+        {/* Main glass card */}
         <div
-          style={{
-            backdropFilter: 'blur(12px)',
-            background: 'linear-gradient(135deg, rgba(0, 255, 200, 0.2), rgba(0, 0, 0, 0.4))',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '1rem',
-            padding: '3rem',
-            maxWidth: '600px',
-            textAlign: 'center',
-            color: '#fff',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-            transformStyle: 'preserve-3d',
-            ...tiltStyle,
-          }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ perspective: '1000px' }}
         >
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Ethan Duval</h1>
-          <p style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>
-            Cybersecurity Engineer – Researcher – Maker
-          </p>
-          <p style={{ opacity: 0.8, marginBottom: '2rem' }}>
-            Welcome to my portfolio website!
-          </p>
-          <Link
-            href="/projects"
+          <div
             style={{
-              backgroundColor: 'rgba(255,255,255,0.15)',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '9999px',
-              border: '1px solid rgba(255,255,255,0.2)',
-              color: '#fff',
-              textDecoration: 'none',
-              fontWeight: '500',
-              backdropFilter: 'blur(8px)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              background: `
+                linear-gradient(135deg, 
+                  var(--color-accent-transparent) 0%, 
+                  rgba(255, 255, 255, 0.1) 50%, 
+                  transparent 100%
+                )
+              `,
+              border: `1px solid var(--color-accent-border)`,
+              borderRadius: '20px',
+              padding: '3rem 2.5rem',
+              maxWidth: '600px',
+              textAlign: 'center',
+              color: 'var(--color-foreground)',
+              boxShadow: `
+                0 8px 32px var(--color-shadow),
+                0 0 60px var(--color-accent-glow),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2)
+              `,
+              transformStyle: 'preserve-3d',
+              position: 'relative',
+              overflow: 'hidden',
+              ...tiltStyle,
             }}
           >
-            View My Projects →
-          </Link>
+            {/* Glass reflection effect */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '40%',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%)',
+                borderRadius: '20px 20px 0 0',
+                pointerEvents: 'none',
+              }}
+            />
+            
+            <h1 style={{ 
+              fontSize: '3rem', 
+              marginBottom: '1rem',
+              background: `linear-gradient(135deg, var(--color-accent), var(--color-foreground))`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              fontWeight: 'bold',
+              textShadow: '0 0 30px var(--color-accent-glow)',
+            }}>
+              Ethan Duval
+            </h1>
+            <p style={{ 
+              fontSize: '1.5rem', 
+              marginBottom: '1.5rem',
+              color: 'var(--color-foreground)',
+              opacity: 0.9,
+            }}>
+              Cybersecurity Engineer – Researcher – Maker
+            </p>
+            <p style={{ 
+              opacity: 0.7, 
+              marginBottom: '2.5rem',
+              color: 'var(--color-foreground)',
+              fontSize: '1.1rem',
+            }}>
+              Welcome to my portfolio website!
+            </p>
+            <Link
+              href="/projects"
+              style={{
+                background: `
+                  linear-gradient(135deg, 
+                    var(--color-accent-bg), 
+                    var(--color-accent-transparent)
+                  )
+                `,
+                padding: '1rem 2rem',
+                borderRadius: '50px',
+                border: `1px solid var(--color-accent-border)`,
+                color: 'var(--color-foreground)',
+                textDecoration: 'none',
+                fontWeight: '600',
+                backdropFilter: 'blur(10px)',
+                boxShadow: `0 4px 20px var(--color-accent-glow)`,
+                transition: 'all 0.3s ease',
+                display: 'inline-block',
+                fontSize: '1.1rem',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+                e.currentTarget.style.boxShadow = `0 8px 30px var(--color-accent-glow)`;
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0px) scale(1)';
+                e.currentTarget.style.boxShadow = `0 4px 20px var(--color-accent-glow)`;
+              }}
+            >
+              View My Projects →
+            </Link>
+          </div>
+        </div>
+
+        {/* Secondary glass cards */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '2rem',
+            width: '100%',
+            maxWidth: '800px',
+          }}
+        >
+          {[
+            { title: 'Security Research', desc: 'Exploring vulnerabilities and defensive strategies' },
+            { title: 'Engineering Projects', desc: 'Building tools and automation solutions' },
+            { title: 'Tech Innovation', desc: 'Experimenting with cutting-edge technologies' }
+          ].map((item, index) => (
+            <div
+              key={index}
+              style={{
+                backdropFilter: 'blur(15px) saturate(180%)',
+                background: `
+                  linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.1) 0%, 
+                    var(--color-accent-transparent) 50%, 
+                    transparent 100%
+                  )
+                `,
+                border: `1px solid rgba(255, 255, 255, 0.2)`,
+                borderRadius: '16px',
+                padding: '2rem',
+                textAlign: 'center',
+                color: 'var(--color-foreground)',
+                boxShadow: `
+                  0 4px 20px rgba(0, 0, 0, 0.1),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                `,
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = `0 8px 30px var(--color-accent-glow)`;
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0px)';
+                e.currentTarget.style.boxShadow = `0 4px 20px rgba(0, 0, 0, 0.1)`;
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '30%',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)',
+                  borderRadius: '16px 16px 0 0',
+                  pointerEvents: 'none',
+                }}
+              />
+              <h3 style={{ 
+                fontSize: '1.25rem', 
+                marginBottom: '0.75rem',
+                color: 'var(--color-accent)',
+                fontWeight: '600',
+              }}>
+                {item.title}
+              </h3>
+              <p style={{ 
+                opacity: 0.8,
+                fontSize: '0.95rem',
+                lineHeight: '1.5',
+              }}>
+                {item.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }
+      `}</style>
     </div>
   )
 }
