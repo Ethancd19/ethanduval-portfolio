@@ -87,7 +87,7 @@ export default function ContactPage() {
               fontWeight: "bold",
             }}
           >
-            Let’s Connect
+            Let&apos;s Connect
           </h1>
           <p
             style={{
@@ -310,7 +310,7 @@ export default function ContactPage() {
                   marginTop: 10,
                 }}
               >
-                Thanks! I’ve emailed you a receipt.
+                Thanks! I&apos;ve emailed you a receipt.
               </p>
             )}
             {status === "error" && (
