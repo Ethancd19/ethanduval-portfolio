@@ -207,10 +207,10 @@ export default function AboutPage() {
               margin: "0 auto",
             }}
           >
-            I'm Ethan Duval, a cybersecurity engineer from the Cayman Islands
+            I&apos;m Ethan Duval, a cybersecurity engineer from the Cayman Islands
             with a passion for building secure systems and protecting digital
             assets. From building my first home lab in high school to pursuing a
-            Master's in Secure Information Systems, my journey has been driven
+            Master&apos;s in Secure Information Systems, my journey has been driven
             by curiosity and a commitment to making the digital world safer. I
             believe in making security accessible and understandable for
             everyone, fostering a culture of awareness and resilience.
@@ -995,8 +995,7 @@ export default function AboutPage() {
                     fontSize: "1.1rem",
                   }}
                 >
-                  "Building tomorrow's security, today — for the Cayman Islands
-                  and beyond"
+                  &quot;I wish I could think of a better way to say this, but I want to make a difference.&quot;
                 </span>
               </div>
             </div>
