@@ -29,9 +29,9 @@ export default function ContactPage() {
       if (!res.ok || !data.ok) throw new Error(data.error || "Failed to send");
       setStatus("sent");
       setForm({ name: "", email: "", company: "", message: "" });
-    } catch (e: any) {
+    } catch (e: unknown) {
       setStatus("error");
-      setError(e?.message || "Unknown error");
+      setError(e instanceof Error ? e.message : String(e));
     }
   };
 

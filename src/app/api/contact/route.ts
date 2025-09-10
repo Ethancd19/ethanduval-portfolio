@@ -46,9 +46,10 @@ export async function POST(request: Request) {
                 <p>Ethan Duval</p>
             `,
         });
-    } catch (error) {
-        console.error("Error sending email:", error);
-        return NextResponse.json({ ok: false, error: "Failed to send email" }, { status: 500 });
+    } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error("Contact route error:", msg, err);
+        return NextResponse.json({ ok: false, error: msg }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true }, { status: 200 });
