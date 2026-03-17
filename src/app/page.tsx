@@ -1,379 +1,560 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 
-export default function Home() {
-  const [tiltStyle, setTiltStyle] = useState({});
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+const focuses = [
+  {
+    n: "01",
+    title: "Network Security",
+    desc: "DNS, DHCP, and IPAM security — hardening enterprise and constrained networks against active threats.",
+  },
+  {
+    n: "02",
+    title: "Lightweight Cryptography",
+    desc: "Benchmarking NIST LWC finalists on IoT hardware. M.Eng thesis under committee chair Dr. Timothy Talty.",
+  },
+  {
+    n: "03",
+    title: "Risk & Compliance",
+    desc: "NIST framework assessments, control reviews, and remediation tracking across enterprise environments.",
+  },
+];
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+const tags = [
+  { label: "IoT Security", accent: true },
+  { label: "Cryptography", accent: true },
+  { label: "Networking", accent: false },
+  { label: "DevOps", accent: false },
+  { label: "NIST", accent: false },
+  { label: "Python", accent: false },
+];
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+// ─── shared style objects ───────────────────────────────────────────────────
 
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+const s = {
+  eyebrow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    fontFamily: "var(--font-mono)",
+    fontSize: "10px",
+    letterSpacing: "0.22em",
+    textTransform: "uppercase",
+    color: "var(--copper)",
+    marginBottom: "1.5rem",
+  } as React.CSSProperties,
 
-    const deltaX = (x - centerX) / centerX;
-    const deltaY = (y - centerY) / centerY;
+  heroName: {
+    fontFamily: "var(--font-serif)",
+    fontSize: "clamp(3.5rem, 5.5vw, 5rem)",
+    lineHeight: 1.0,
+    color: "var(--cream)",
+    marginBottom: "1rem",
+  } as React.CSSProperties,
 
-    const rotateX = deltaY * 8;
-    const rotateY = deltaX * -8;
+  heroRole: {
+    fontFamily: "var(--font-mono)",
+    fontSize: "11px",
+    letterSpacing: "0.15em",
+    textTransform: "uppercase",
+    color: "var(--text-muted)",
+    marginBottom: "2rem",
+    lineHeight: 2,
+  } as React.CSSProperties,
 
-    setTiltStyle({
-      transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`,
-      transition: "transform 0.4s ease",
-    });
-  };
+  btnPrimary: {
+    display: "inline-block",
+    fontFamily: "var(--font-mono)",
+    fontSize: "11px",
+    fontWeight: 500,
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    padding: "0.85rem 2rem",
+    background: "var(--copper)",
+    color: "var(--navy)",
+    border: "none",
+    borderRadius: "2px",
+    cursor: "pointer",
+    transition: "background 0.2s",
+  } as React.CSSProperties,
 
-  const handleMouseLeave = () => {
-    setTiltStyle({
-      transform: "rotateX(0deg) rotateY(0deg) translateZ(0px)",
-      transition: "transform 0.8s ease",
-    });
-  };
+  btnGhost: {
+    display: "inline-block",
+    fontFamily: "var(--font-mono)",
+    fontSize: "11px",
+    fontWeight: 500,
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    padding: "0.85rem 2rem",
+    background: "transparent",
+    color: "var(--text-muted)",
+    border: "0.5px solid rgba(255,255,255,0.08)",
+    borderRadius: "2px",
+    cursor: "pointer",
+    transition: "all 0.2s",
+  } as React.CSSProperties,
 
+  sectionLabel: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    fontFamily: "var(--font-mono)",
+    fontSize: "10px",
+    letterSpacing: "0.25em",
+    textTransform: "uppercase",
+    color: "var(--copper)",
+    marginBottom: "1rem",
+  } as React.CSSProperties,
+
+  sectionTitle: {
+    fontFamily: "var(--font-serif)",
+    fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+    color: "var(--cream)",
+    marginBottom: "2.5rem",
+    lineHeight: 1.15,
+  } as React.CSSProperties,
+};
+
+export default function HomePage() {
   return (
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        background: `
-          radial-gradient(circle at 20% 30%, var(--color-accent-transparent) 0%, transparent 50%),
-          radial-gradient(circle at 80% 70%, var(--color-accent-transparent) 0%, transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
-          var(--color-background)
-        `,
-        overflow: "hidden",
-      }}
-    >
-      {/* Ambient floating elements */}
-      <div
+    <>
+      {/* ── Hero ────────────────────────────────────────────────────── */}
+      <section
         style={{
-          position: "absolute",
-          top: "20%",
-          left: "10%",
-          width: "200px",
-          height: "200px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, var(--color-accent-transparent), transparent 70%)`,
-          filter: "blur(40px)",
-          animation: "float 6s ease-in-out infinite",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "60%",
-          right: "15%",
-          width: "150px",
-          height: "150px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, var(--color-accent-transparent), transparent 70%)`,
-          filter: "blur(30px)",
-          animation: "float 8s ease-in-out infinite reverse",
-        }}
-      />
-
-      {/* Mouse follower */}
-      <div
-        style={{
-          position: "fixed",
-          top: mousePos.y - 100,
-          left: mousePos.x - 100,
-          width: "200px",
-          height: "200px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, var(--color-accent-glow), transparent 70%)`,
-          filter: "blur(60px)",
-          pointerEvents: "none",
-          transition: "all 0.3s ease",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Main content */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 10,
-          display: "flex",
-          flexDirection: "column",
+          minHeight: "calc(100vh - 68px)",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
           alignItems: "center",
+          padding: "5rem 3rem",
           gap: "2rem",
-          maxWidth: "1200px",
-          width: "100%",
-          padding: "2rem",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* Main glass card */}
+        {/* Ambient glow */}
         <div
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{ perspective: "1000px" }}
-        >
-          <div
-            style={{
-              backdropFilter: "blur(20px) saturate(180%)",
-              background: `
-                linear-gradient(135deg, 
-                  var(--color-accent-transparent) 0%, 
-                  rgba(255, 255, 255, 0.1) 50%, 
-                  transparent 100%
-                )
-              `,
-              border: `1px solid var(--color-accent-border)`,
-              borderRadius: "20px",
-              padding: "3rem 2.5rem",
-              maxWidth: "600px",
-              textAlign: "center",
-              color: "var(--color-foreground)",
-              boxShadow: `
-                0 8px 32px var(--color-shadow),
-                0 0 60px var(--color-accent-glow),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2)
-              `,
-              transformStyle: "preserve-3d",
-              position: "relative",
-              overflow: "hidden",
-              ...tiltStyle,
-            }}
-          >
-            {/* Glass reflection effect */}
-            <div
+          style={{
+            position: "absolute",
+            right: "-5%",
+            top: "10%",
+            width: "55vw",
+            height: "55vw",
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(184,115,51,0.05) 0%, transparent 60%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Left — text */}
+        <div>
+          <div style={s.eyebrow}>
+            <span
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "40%",
-                background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%)",
-                borderRadius: "20px 20px 0 0",
-                pointerEvents: "none",
+                display: "block",
+                width: "32px",
+                height: "1px",
+                background: "var(--copper)",
+                flexShrink: 0,
               }}
             />
+            Cybersecurity Engineer
+          </div>
 
-            <h1
-              style={{
-                fontSize: "3rem",
-                marginBottom: "1rem",
-                background: `linear-gradient(135deg, var(--color-accent), var(--color-foreground))`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                fontWeight: "bold",
-                textShadow: "0 0 30px var(--color-accent-glow)",
-              }}
-            >
-              Ethan Duval
-            </h1>
-            <p
-              style={{
-                fontSize: "1.5rem",
-                marginBottom: "1.5rem",
-                color: "var(--color-foreground)",
-                opacity: 0.9,
-              }}
-            >
-              Cybersecurity Engineer – Researcher – Maker
-            </p>
-            <p
-              style={{
-                opacity: 0.7,
-                marginBottom: "2.5rem",
-                color: "var(--color-foreground)",
-                fontSize: "1.1rem",
-              }}
-            >
-              Welcome to my portfolio website!
-            </p>
-            <div
-              style={{
-                display: "flex",
-                gap: "0.75rem",
-                justifyContent: "center",
-              }}
-            >
-              <Link
-                href="/about"
-                style={{
-                  background: `linear-gradient(135deg, var(--color-accent), rgba(255,255,255,0.2))`,
-                  padding: "1rem 2rem",
-                  borderRadius: "50px",
-                  border: "1px solid var(--color-accent-border)",
-                  color: "white",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  fontSize: "1.05rem",
-                  backdropFilter: "blur(10px)",
-                  boxShadow: `0 6px 24px var(--color-accent-glow)`,
-                  transition: "all 0.3s ease",
-                  display: "inline-block",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-3px) scale(1.05)";
-                  e.currentTarget.style.boxShadow = `0 10px 36px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = `0 6px 24px var(--color-accent-glow)`;
-                }}
-              >
-                About Me
-              </Link>
+          <h1 style={s.heroName}>
+            Ethan
+            <br />
+            <em style={{ color: "var(--copper-bright)", fontStyle: "italic" }}>
+              Duval
+            </em>
+          </h1>
 
-              <Link
-                href="/contact"
-                style={{
-                  background: `linear-gradient(135deg, var(--color-accent), rgba(255,255,255,0.2))`, // ← same as About
-                  padding: "1rem 2rem",
-                  borderRadius: "50px",
-                  border: "1px solid var(--color-accent-border)",
-                  color: "white",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  fontSize: "1.05rem",
-                  backdropFilter: "blur(10px)",
-                  boxShadow: `0 6px 24px var(--color-accent-glow)`,
-                  transition: "all 0.3s ease",
-                  display: "inline-block",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-3px) scale(1.05)";
-                  e.currentTarget.style.boxShadow = `0 10px 36px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = `0 6px 24px var(--color-accent-glow)`;
-                }}
-              >
-                Contact
-              </Link>
-            </div>
+          <p style={s.heroRole}>
+            M.Eng &nbsp;·&nbsp; Virginia Tech &nbsp;·&nbsp; Cayman Islands
+          </p>
+
+          <p
+            style={{
+              fontSize: "15px",
+              lineHeight: 1.8,
+              color: "var(--text-muted)",
+              marginBottom: "3rem",
+              maxWidth: "460px",
+            }}
+          >
+            Building secure systems at the intersection of networking,
+            cryptography, and resilient infrastructure. Graduating May 2026.
+          </p>
+
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <Link
+              href="/about"
+              style={s.btnPrimary}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--copper-light)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "var(--copper)")
+              }
+            >
+              About me
+            </Link>
+            <Link
+              href="/contact"
+              style={s.btnGhost}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--text-muted)";
+                e.currentTarget.style.color = "var(--cream)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.color = "var(--text-muted)";
+              }}
+            >
+              Get in touch
+            </Link>
           </div>
         </div>
 
-        {/* Secondary glass cards */}
+        {/* Right — identity card */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "2rem",
-            width: "100%",
-            maxWidth: "800px",
+            display: "flex",
+            justifyContent: "flex-end",
+            paddingLeft: "3rem",
           }}
         >
-          {[
-            {
-              title: "Security Research",
-              desc: "Exploring vulnerabilities and defensive strategies",
-            },
-            {
-              title: "Engineering Projects",
-              desc: "Building tools and automation solutions",
-            },
-            {
-              title: "Tech Innovation",
-              desc: "Experimenting with cutting-edge technologies",
-            },
-          ].map((item, index) => (
+          <div
+            style={{
+              width: "340px",
+              border: "0.5px solid var(--border)",
+              borderRadius: "3px",
+              overflow: "hidden",
+              background: "rgba(17, 37, 56, 0.7)",
+            }}
+          >
+            {/* Header */}
             <div
-              key={index}
               style={{
-                backdropFilter: "blur(15px) saturate(180%)",
-                background: `
-                  linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.1) 0%, 
-                    var(--color-accent-transparent) 50%, 
-                    transparent 100%
-                  )
-                `,
-                border: `1px solid rgba(255, 255, 255, 0.2)`,
-                borderRadius: "16px",
-                padding: "2rem",
-                textAlign: "center",
-                color: "var(--color-foreground)",
-                boxShadow: `
-                  0 4px 20px rgba(0, 0, 0, 0.1),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                `,
-                transition: "all 0.3s ease",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = "translateY(-5px)";
-                e.currentTarget.style.boxShadow = `0 8px 30px var(--color-accent-glow)`;
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "translateY(0px)";
-                e.currentTarget.style.boxShadow = `0 4px 20px rgba(0, 0, 0, 0.1)`;
+                padding: "1.5rem",
+                borderBottom: "0.5px solid var(--border)",
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
               }}
             >
               <div
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: "30%",
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)",
-                  borderRadius: "16px 16px 0 0",
-                  pointerEvents: "none",
+                  width: "50px",
+                  height: "50px",
+                  borderRadius: "2px",
+                  background: "var(--navy-light)",
+                  border: "0.5px solid var(--border)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "18px",
+                  color: "var(--copper-bright)",
+                  flexShrink: 0,
+                }}
+              >
+                ED
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "var(--cream)",
+                    marginBottom: "2px",
+                  }}
+                >
+                  Ethan Duval
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "var(--text-dim)",
+                  }}
+                >
+                  Security Researcher
+                </div>
+              </div>
+              <div
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  borderRadius: "50%",
+                  background: "#5DBB8A",
+                  flexShrink: 0,
                 }}
               />
-              <h3
+            </div>
+
+            {/* Stats */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                borderBottom: "0.5px solid var(--border)",
+              }}
+            >
+              {[
+                { val: "3", label: "Internships" },
+                { val: "M.Eng", label: "Degree" },
+                { val: "KY", label: "Home base" },
+                { val: "'26", label: "Graduating" },
+              ].map(({ val, label }, i) => (
+                <div
+                  key={label}
+                  style={{
+                    padding: "1.1rem",
+                    borderRight:
+                      i % 2 === 0 ? "0.5px solid var(--border)" : "none",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontSize: "20px",
+                      color: "var(--cream)",
+                      marginBottom: "2px",
+                    }}
+                  >
+                    {val}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: "var(--text-dim)",
+                    }}
+                  >
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Tags */}
+            <div
+              style={{
+                padding: "1.1rem",
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.4rem",
+              }}
+            >
+              {tags.map(({ label, accent }) => (
+                <span
+                  key={label}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    padding: "0.25rem 0.55rem",
+                    border: accent
+                      ? "0.5px solid rgba(184,115,51,0.4)"
+                      : "0.5px solid rgba(255,255,255,0.07)",
+                    borderRadius: "2px",
+                    color: accent ? "var(--copper-light)" : "var(--text-dim)",
+                  }}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Focus areas ─────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "5rem 3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+        }}
+      >
+        <div style={s.sectionLabel}>
+          <span
+            style={{
+              display: "block",
+              width: "24px",
+              height: "1px",
+              background: "var(--copper)",
+              flexShrink: 0,
+            }}
+          />
+          Focus Areas
+        </div>
+        <h2 style={s.sectionTitle}>What I work on</h2>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1px",
+            background: "rgba(255,255,255,0.06)",
+            border: "0.5px solid rgba(255,255,255,0.06)",
+            borderRadius: "3px",
+            overflow: "hidden",
+          }}
+        >
+          {focuses.map(({ n, title, desc }) => (
+            <div
+              key={n}
+              style={{
+                background: "var(--navy)",
+                padding: "2rem",
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--navy-mid)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "var(--navy)")
+              }
+            >
+              <div
                 style={{
-                  fontSize: "1.25rem",
-                  marginBottom: "0.75rem",
-                  color: "var(--color-accent)",
-                  fontWeight: "600",
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "38px",
+                  color: "rgba(184,115,51,0.18)",
+                  marginBottom: "1rem",
+                  lineHeight: 1,
                 }}
               >
-                {item.title}
-              </h3>
-              <p
+                {n}
+              </div>
+              <div
                 style={{
-                  opacity: 0.8,
-                  fontSize: "0.95rem",
-                  lineHeight: "1.5",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "var(--cream)",
+                  marginBottom: "0.5rem",
                 }}
               >
-                {item.desc}
-              </p>
+                {title}
+              </div>
+              <div
+                style={{
+                  fontSize: "13px",
+                  color: "var(--text-muted)",
+                  lineHeight: 1.65,
+                }}
+              >
+                {desc}
+              </div>
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ── CTA band ────────────────────────────────────────────────── */}
+      <div
+        style={{
+          background: "var(--navy-mid)",
+          border: "0.5px solid var(--border)",
+          borderRadius: "3px",
+          padding: "3rem",
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          gap: "2rem",
+          alignItems: "center",
+          margin: "0 3rem 5rem",
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: "1.8rem",
+              color: "var(--cream)",
+              marginBottom: "0.4rem",
+            }}
+          >
+            Open to opportunities
+          </div>
+          <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+            Networking, cybersecurity, and DevOps roles — graduating May 2026.
+          </div>
+        </div>
+        <Link
+          href="/contact"
+          style={s.btnPrimary}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "var(--copper-light)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "var(--copper)")
+          }
+        >
+          Reach out
+        </Link>
       </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(5deg);
-          }
-        }
-      `}</style>
-    </div>
+      {/* ── Footer ──────────────────────────────────────────────────── */}
+      <footer
+        style={{
+          padding: "1.75rem 3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "10px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--text-dim)",
+          }}
+        >
+          Ethan Duval © 2026
+        </span>
+        <div style={{ display: "flex", gap: "2rem" }}>
+          {[
+            {
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/in/ethan-duval",
+            },
+            { label: "GitHub", href: "https://github.com/ethancd19" },
+            { label: "Résumé", href: "/resume.pdf" },
+          ].map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--text-dim)",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--copper)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-dim)")
+              }
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </footer>
+    </>
   );
 }

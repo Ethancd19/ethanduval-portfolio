@@ -1,1112 +1,517 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 
+const experience = [
+  {
+    role: "Professional Services Intern",
+    company: "EfficientIP",
+    period: "2025",
+    desc: "Reverse-engineered DNS Guardian test scripts for QA and customer demos. Automated validation workflows with Python, reducing manual steps during DDI implementations.",
+  },
+  {
+    role: "Cyber Security Intern",
+    company: "Dart Enterprises · Cayman Islands",
+    period: "2024",
+    desc: "System hardening through patching and vulnerability remediation. Assisted with incident response and threat monitoring using Wireshark and the ELK Stack.",
+  },
+  {
+    role: "Risk Advisory Intern",
+    company: "Deloitte",
+    period: "2023",
+    desc: "Supported cyber risk engagements with client documentation. Conducted control reviews aligned to NIST frameworks and tracked remediation across Windows and AD environments.",
+  },
+];
+
+const skills = [
+  {
+    tier: "Core",
+    items: [
+      "Penetration Testing",
+      "Network Security",
+      "Threat Analysis",
+      "DNS / DHCP / IPAM",
+    ],
+  },
+  {
+    tier: "Proficient",
+    items: [
+      "Incident Response",
+      "Python / Scripting",
+      "Cloud Security",
+      "ELK Stack",
+    ],
+  },
+  {
+    tier: "Familiar",
+    items: ["Kubernetes", "Terraform", "GRC", "Active Directory"],
+  },
+];
+
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.75rem",
+      fontFamily: "var(--font-mono)",
+      fontSize: "10px",
+      letterSpacing: "0.25em",
+      textTransform: "uppercase",
+      color: "var(--copper)",
+      marginBottom: "1rem",
+    }}
+  >
+    <span
+      style={{
+        display: "block",
+        width: "24px",
+        height: "1px",
+        background: "var(--copper)",
+        flexShrink: 0,
+      }}
+    />
+    {children}
+  </div>
+);
+
+const SectionTitle = ({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) => (
+  <h2
+    style={{
+      fontFamily: "var(--font-serif)",
+      fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+      color: "var(--cream)",
+      marginBottom: "2.5rem",
+      lineHeight: 1.15,
+      ...style,
+    }}
+  >
+    {children}
+  </h2>
+);
+
 export default function AboutPage() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [skillHover, setSkillHover] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  const skillTiers = {
-    Core: [
-      { name: "Penetration Testing", icon: "🔍" },
-      { name: "Network Security", icon: "🛡️" },
-      { name: "Threat Analysis", icon: "⚡" },
-    ],
-    Proficient: [
-      { name: "Incident Response", icon: "🚨" },
-      { name: "Python/Scripting", icon: "🐍" },
-      { name: "Cloud Security", icon: "☁️" },
-    ],
-    Familiar: [
-      // add light-touch items here later (e.g., “GRC”, “Kubernetes”, “Terraform”)
-    ],
-  } as const;
-
-  // Small helper to render “pills”
-  const SkillPill = ({ icon, label }: { icon: string; label: string }) => (
-    <div
-      style={{
-        backdropFilter: "blur(10px) saturate(180%)",
-        background:
-          "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, var(--color-accent-transparent) 100%)",
-        border: "1px solid rgba(255,255,255,0.3)",
-        borderRadius: "999px",
-        padding: "0.55rem 1rem",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "0.5rem",
-        transition: "all 0.25s ease",
-        cursor: "default",
-      }}
-    >
-      <span style={{ fontSize: "1.05rem" }}>{icon}</span>
-      <span
-        style={{
-          color: "var(--color-foreground)",
-          fontWeight: 500,
-          fontSize: "0.95rem",
-          letterSpacing: "0.1px",
-        }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-
-  const values = [
-    {
-      title: "Security First",
-      description:
-        "Every system should be built with security as a core principle, not an afterthought.",
-      icon: "🔐",
-    },
-    {
-      title: "Continuous Learning",
-      description:
-        "The threat landscape evolves daily. Staying ahead requires constant adaptation and growth.",
-      icon: "📚",
-    },
-    {
-      title: "Ethical Hacking",
-      description:
-        "Using technical skills responsibly to make the digital world safer for everyone.",
-      icon: "⚖️",
-    },
-  ];
-
-  const interests = [
-    { name: "IoT Security Research", icon: "🔬" },
-    { name: "Home Lab Experiments", icon: "🧪" },
-    { name: "Tech Mentoring", icon: "👥" },
-    { name: "Hardware Hacking", icon: "⚙️" },
-    { name: "Photography", icon: "📸" },
-  ];
-
   return (
-    <div
-      style={{
-        position: "relative",
-        minHeight: "100vh",
-        background: `
-          radial-gradient(circle at 15% 20%, var(--color-accent-transparent) 0%, transparent 50%),
-          radial-gradient(circle at 85% 80%, var(--color-accent-transparent) 0%, transparent 50%),
-          var(--color-background)
-        `,
-        overflow: "hidden",
-      }}
-    >
-      {/* Mouse follower */}
-      <div
+    <>
+      {/* ── Intro ───────────────────────────────────────────────────── */}
+      <section
         style={{
-          position: "fixed",
-          top: mousePos.y - 75,
-          left: mousePos.x - 75,
-          width: "150px",
-          height: "150px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, var(--color-accent-glow), transparent 70%)`,
-          filter: "blur(40px)",
-          pointerEvents: "none",
-          transition: "all 0.3s ease",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Floating ambient elements */}
-      <div
-        style={{
-          position: "absolute",
-          top: "10%",
-          right: "20%",
-          width: "100px",
-          height: "100px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, var(--color-accent-transparent), transparent 70%)`,
-          filter: "blur(20px)",
-          animation: "float 8s ease-in-out infinite",
-        }}
-      />
-
-      <div
-        style={{
-          position: "relative",
-          zIndex: 10,
+          padding: "4rem 3rem 3rem",
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "2rem",
         }}
       >
-        {/* Hero Section */}
-        <section
+        <SectionLabel>Background</SectionLabel>
+        <SectionTitle>About me</SectionTitle>
+        <p
           style={{
-            backdropFilter: "blur(20px) saturate(180%)",
-            background: `
-              linear-gradient(135deg, 
-                var(--color-accent-transparent) 0%, 
-                rgba(255, 255, 255, 0.1) 50%, 
-                transparent 100%
-              )
-            `,
-            border: `1px solid var(--color-accent-border)`,
-            borderRadius: "24px",
-            padding: "3rem",
-            marginBottom: "3rem",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-            boxShadow: `
-              0 8px 32px var(--color-shadow),
-              0 0 60px var(--color-accent-glow),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2)
-            `,
+            fontSize: "16px",
+            lineHeight: 1.85,
+            color: "var(--text-muted)",
+            maxWidth: "680px",
+            marginBottom: "0",
           }}
         >
+          I&apos;m a cybersecurity engineer from the Cayman Islands pursuing an
+          M.Eng in Secure Information Systems at Virginia Tech. My work spans
+          network security, lightweight cryptography research, and secure
+          infrastructure design — driven by a long-term goal of bringing
+          enterprise-grade capabilities back to the Caribbean.
+        </p>
+      </section>
+
+      {/* ── Education ───────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        <SectionLabel>Education</SectionLabel>
+
+        {[
+          {
+            year: "2026",
+            degree: "M.Eng — Secure Information Systems & Networking",
+            school: "Virginia Polytechnic Institute and State University",
+            note: "Thesis: Benchmarking Lightweight Cryptography on Constrained IoT Hardware",
+          },
+          {
+            year: "2023",
+            degree: "B.S. — Computer Engineering, Networking & Cybersecurity",
+            school: "Virginia Polytechnic Institute and State University",
+            note: null,
+          },
+        ].map(({ year, degree, school, note }) => (
           <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "40%",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%)",
-              borderRadius: "24px 24px 0 0",
-              pointerEvents: "none",
-            }}
-          />
-
-          <h1
-            style={{
-              fontSize: "3.5rem",
-              marginBottom: "1.5rem",
-              background: `linear-gradient(135deg, var(--color-accent), var(--color-foreground))`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              fontWeight: "bold",
-            }}
-          >
-            About Me
-          </h1>
-          <p
-            style={{
-              fontSize: "1.3rem",
-              lineHeight: "1.8",
-              color: "var(--color-foreground)",
-              opacity: 0.9,
-              maxWidth: "800px",
-              margin: "0 auto",
-            }}
-          >
-            I&apos;m Ethan Duval, a cybersecurity engineer from the Cayman Islands
-            with a passion for building secure systems and protecting digital
-            assets. From building my first home lab in high school to pursuing a
-            Master&apos;s in Secure Information Systems, my journey has been driven
-            by curiosity and a commitment to making the digital world safer. I
-            believe in making security accessible and understandable for
-            everyone, fostering a culture of awareness and resilience.
-          </p>
-        </section>
-
-        {/* Education Section */}
-        <section style={{ marginBottom: "3rem" }}>
-          <div
-            style={{
-              backdropFilter: "blur(20px) saturate(180%)",
-              background: `
-                linear-gradient(135deg, 
-                  rgba(255, 255, 255, 0.1) 0%, 
-                  var(--color-accent-transparent) 50%, 
-                  transparent 100%
-                )
-              `,
-              border: `1px solid var(--color-accent-border)`,
-              borderRadius: "20px",
-              padding: "2.5rem",
-              position: "relative",
-              overflow: "hidden",
-              boxShadow: `
-                0 8px 32px var(--color-shadow),
-                0 0 40px var(--color-accent-glow),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2)
-              `,
-              transition: "all 0.3s ease",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: "40%",
-                background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%)",
-                borderRadius: "20px 20px 0 0",
-                pointerEvents: "none",
-              }}
-            />
-
-            <h2
-              style={{
-                fontSize: "2.5rem",
-                textAlign: "center",
-                marginBottom: "2rem",
-                color: "var(--color-accent)",
-                fontWeight: "bold",
-              }}
-            >
-              Education
-            </h2>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                gap: "2rem",
-                alignItems: "start",
-              }}
-            >
-              {/* Education */}
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    fontSize: "3rem",
-                    marginBottom: "1rem",
-                    filter: "drop-shadow(0 0 10px var(--color-accent-glow))",
-                  }}
-                >
-                  🎓
-                </div>
-                <h3
-                  style={{
-                    fontSize: "1.5rem",
-                    color: "var(--color-accent)",
-                    marginBottom: "1rem",
-                    fontWeight: "600",
-                  }}
-                >
-                  Education
-                </h3>
-                <div>
-                  <p
-                    style={{
-                      color: "var(--color-foreground)",
-                      fontSize: "1.1rem",
-                      marginBottom: "0.5rem",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Bachelor of Science in Computer Engineering in Networking
-                    and Cybersecurity
-                  </p>
-                  <p
-                    style={{
-                      color: "var(--color-foreground)",
-                      opacity: 0.8,
-                      fontSize: "1rem",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    Virginia Polytechnic Institute and State University • 2023
-                  </p>
-                  <p
-                    style={{
-                      color: "var(--color-foreground)",
-                      fontSize: "1.1rem",
-                      marginBottom: "0.5rem",
-                      fontWeight: "500",
-                    }}
-                  >
-                    Master of Engineering in Computer Engineering in Secure
-                    Information Systems and Networking
-                  </p>
-                  <p
-                    style={{
-                      color: "var(--color-foreground)",
-                      opacity: 0.8,
-                      fontSize: "1rem",
-                    }}
-                  >
-                    Virginia Polytechnic Institute and State University • In
-                    Progress
-                  </p>
-                </div>
-              </div>
-
-              {/* Certifications */}
-              <div style={{ textAlign: "center" }}>
-                <div
-                  style={{
-                    fontSize: "3rem",
-                    marginBottom: "1rem",
-                    filter: "drop-shadow(0 0 10px var(--color-accent-glow))",
-                  }}
-                >
-                  🏆
-                </div>
-                <h3
-                  style={{
-                    fontSize: "1.5rem",
-                    color: "var(--color-accent)",
-                    marginBottom: "1rem",
-                    fontWeight: "600",
-                  }}
-                >
-                  Certifications
-                </h3>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.75rem",
-                  }}
-                >
-                  {["CC - Certified in Cybersecurity (ISC)² - In progress"].map(
-                    (cert, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          background: `
-                          linear-gradient(135deg, 
-                            rgba(255, 255, 255, 0.1) 0%, 
-                            var(--color-accent-transparent) 100%
-                          )
-                        `,
-                          border: `1px solid rgba(255, 255, 255, 0.2)`,
-                          borderRadius: "12px",
-                          padding: "0.75rem 1rem",
-                          backdropFilter: "blur(10px)",
-                          transition: "all 0.3s ease",
-                          cursor: "pointer",
-                        }}
-                        onMouseOver={(e) => {
-                          e.currentTarget.style.transform = "translateX(5px)";
-                          e.currentTarget.style.boxShadow = `0 4px 15px var(--color-accent-glow)`;
-                        }}
-                        onMouseOut={(e) => {
-                          e.currentTarget.style.transform = "translateX(0)";
-                          e.currentTarget.style.boxShadow = "none";
-                        }}
-                      >
-                        <p
-                          style={{
-                            color: "var(--color-foreground)",
-                            fontSize: "0.95rem",
-                            fontWeight: "500",
-                            margin: "0",
-                          }}
-                        >
-                          {cert}
-                        </p>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Skills Section */}
-        <section style={{ marginBottom: "3rem" }}>
-          <h2
-            style={{
-              fontSize: "2.5rem",
-              textAlign: "center",
-              marginBottom: "2rem",
-              color: "var(--color-accent)",
-              fontWeight: "bold",
-            }}
-          >
-            Technical Expertise
-          </h2>
-
-          <div
+            key={year}
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "1.5rem",
+              gridTemplateColumns: "64px 1fr",
+              gap: "0 2rem",
+              padding: "1.75rem 0",
+              borderBottom: "0.5px solid rgba(255,255,255,0.06)",
             }}
           >
-            {[
-              { tier: "Core", caption: "Where I spend most of my time" },
-              { tier: "Proficient", caption: "Confident day-to-day" },
-              { tier: "Familiar", caption: "Used in projects / learning" },
-            ].map(({ tier, caption }) => (
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                color: "var(--text-dim)",
+                paddingTop: "3px",
+              }}
+            >
+              {year}
+            </div>
+            <div>
               <div
-                key={tier}
                 style={{
-                  backdropFilter: "blur(15px) saturate(180%)",
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, var(--color-accent-transparent) 50%, transparent 100%)",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  borderRadius: "16px",
-                  padding: "1.75rem",
-                  position: "relative",
-                  overflow: "hidden",
-                  transition: "all 0.3s ease",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  color: "var(--cream)",
+                  marginBottom: "0.25rem",
                 }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = "translateY(-5px)";
-                  e.currentTarget.style.boxShadow = `0 12px 40px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-                aria-labelledby={`tier-${tier}`}
               >
+                {degree}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--copper)",
+                  marginBottom: note ? "0.4rem" : 0,
+                }}
+              >
+                {school}
+              </div>
+              {note && (
                 <div
                   style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "30%",
-                    background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)",
-                    borderRadius: "16px 16px 0 0",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: "0.5rem",
+                    fontSize: "13px",
+                    color: "var(--text-dim)",
+                    fontStyle: "italic",
                   }}
                 >
-                  <h3
-                    id={`tier-${tier}`}
-                    style={{
-                      fontSize: "1.25rem",
-                      color: "var(--color-accent)",
-                      fontWeight: 700,
-                      margin: 0,
-                    }}
-                  >
-                    {tier}
-                  </h3>
-                  <span
-                    style={{
-                      fontSize: "0.95rem",
-                      color: "var(--color-foreground)",
-                      opacity: 0.8,
-                    }}
-                  >
-                    {caption}
-                  </span>
+                  {note}
                 </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </section>
 
+      {/* ── Experience ──────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        <SectionLabel>Experience</SectionLabel>
+        <SectionTitle>Professional history</SectionTitle>
+
+        <div
+          style={{
+            display: "grid",
+            gap: "1px",
+            background: "rgba(255,255,255,0.06)",
+            border: "0.5px solid rgba(255,255,255,0.06)",
+            borderRadius: "3px",
+            overflow: "hidden",
+          }}
+        >
+          {experience.map(({ role, company, period, desc }) => (
+            <div
+              key={role}
+              style={{
+                background: "var(--navy)",
+                padding: "1.75rem 2rem",
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: "1rem",
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "var(--navy-mid)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "var(--navy)")
+              }
+            >
+              <div>
                 <div
                   style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "0.6rem",
-                    marginTop: "1rem",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "var(--cream)",
+                    marginBottom: "0.2rem",
                   }}
                 >
-                  {skillTiers[tier as keyof typeof skillTiers].length === 0 ? (
+                  {role}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "10px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: "var(--copper)",
+                    marginBottom: "0.65rem",
+                  }}
+                >
+                  {company}
+                </div>
+                <div
+                  style={{
+                    fontSize: "13px",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {desc}
+                </div>
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  color: "var(--text-dim)",
+                  whiteSpace: "nowrap",
+                  paddingTop: "2px",
+                }}
+              >
+                {period}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Skills ──────────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        <SectionLabel>Technical Skills</SectionLabel>
+        <SectionTitle>Expertise</SectionTitle>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1px",
+            background: "rgba(255,255,255,0.06)",
+            border: "0.5px solid rgba(255,255,255,0.06)",
+            borderRadius: "3px",
+            overflow: "hidden",
+          }}
+        >
+          {skills.map(({ tier, items }) => (
+            <div
+              key={tier}
+              style={{ background: "var(--navy)", padding: "2rem" }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "var(--copper)",
+                  marginBottom: "1.25rem",
+                }}
+              >
+                {tier}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {items.map((item) => (
+                  <div
+                    key={item}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.6rem",
+                    }}
+                  >
                     <span
                       style={{
-                        fontSize: "0.95rem",
-                        color: "var(--color-foreground)",
-                        opacity: 0.7,
+                        width: "4px",
+                        height: "4px",
+                        borderRadius: "50%",
+                        background: "var(--copper)",
+                        flexShrink: 0,
+                        opacity: 0.6,
                       }}
+                    />
+                    <span
+                      style={{ fontSize: "13px", color: "var(--text-muted)" }}
                     >
-                      Add items when ready.
+                      {item}
                     </span>
-                  ) : (
-                    skillTiers[tier as keyof typeof skillTiers].map((s) => (
-                      <SkillPill key={s.name} icon={s.icon} label={s.name} />
-                    ))
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Values & Philosophy */}
-        <section style={{ marginBottom: "3rem" }}>
-          <h2
-            style={{
-              fontSize: "2.5rem",
-              textAlign: "center",
-              marginBottom: "2rem",
-              color: "var(--color-accent)",
-              fontWeight: "bold",
-            }}
-          >
-            My Philosophy
-          </h2>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "2rem",
-            }}
-          >
-            {values.map((value, index) => (
-              <div
-                key={value.title}
-                style={{
-                  backdropFilter: "blur(15px) saturate(180%)",
-                  background: `
-                    linear-gradient(135deg, 
-                      var(--color-accent-transparent) 0%, 
-                      rgba(255, 255, 255, 0.1) 50%, 
-                      transparent 100%
-                    )
-                  `,
-                  border: `1px solid var(--color-accent-border)`,
-                  borderRadius: "20px",
-                  padding: "2rem",
-                  textAlign: "center",
-                  position: "relative",
-                  overflow: "hidden",
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.boxShadow = `0 12px 40px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = `0 4px 20px rgba(0, 0, 0, 0.1)`;
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "40%",
-                    background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)",
-                    borderRadius: "20px 20px 0 0",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                <div
-                  style={{
-                    fontSize: "3rem",
-                    marginBottom: "1rem",
-                    filter: "drop-shadow(0 0 10px var(--color-accent-glow))",
-                  }}
-                >
-                  {value.icon}
-                </div>
-                <h3
-                  style={{
-                    fontSize: "1.5rem",
-                    marginBottom: "1rem",
-                    color: "var(--color-accent)",
-                    fontWeight: "600",
-                  }}
-                >
-                  {value.title}
-                </h3>
-                <p
-                  style={{
-                    color: "var(--color-foreground)",
-                    opacity: 0.9,
-                    lineHeight: "1.6",
-                    fontSize: "1rem",
-                  }}
-                >
-                  {value.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Professional Experience Section */}
-        <section style={{ marginBottom: "3rem" }}>
-          <h2
-            style={{
-              fontSize: "2.5rem",
-              textAlign: "center",
-              marginBottom: "2rem",
-              color: "var(--color-accent)",
-              fontWeight: "bold",
-            }}
-          >
-            Professional Experience
-          </h2>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
-              gap: "2rem",
-            }}
-          >
-            {[
-              {
-                role: "Professional Services Intern",
-                company: "EfficientIP",
-                period: "Summer 2025",
-                icon: "🧩",
-                points: [
-                  "Reverse-engineered and documented DNS Guardian test scripts for QA and customer demos",
-                  "Automated validation workflows with Python, reducing manual steps during implementations",
-                  "Observed customer deployments and captured repeatable SOPs for service delivery",
-                  "Gained hands-on exposure to DNS, DHCP, and IPAM security within enterprise networks",
-                ],
-              },
-              {
-                role: "Cyber Security Intern",
-                company: "DART",
-                period: "Spring 2024",
-                icon: "🛡️",
-                points: [
-                  "Hardened internal systems through patching and vulnerability remediation",
-                  "Assisted with incident response and threat monitoring using Wireshark and ELK",
-                  "Drafted playbooks and supported on-site security drills",
-                ],
-              },
-              {
-                role: "Risk Advisory Intern",
-                company: "Deloitte",
-                period: "Summer 2023",
-                icon: "📊",
-                points: [
-                  "Supported cyber risk and discovery engagements with client documentation",
-                  "Conducted control reviews aligned to NIST frameworks and tracked remediation",
-                  "Collaborated on assessments across Windows and AD environments",
-                ],
-              },
-            ].map((exp, index) => (
-              <div
-                key={index}
-                style={{
-                  backdropFilter: "blur(15px) saturate(180%)",
-                  background: `
-                    linear-gradient(135deg, 
-                      rgba(255, 255, 255, 0.1) 0%, 
-                      var(--color-accent-transparent) 50%, 
-                      transparent 100%
-                    )
-                  `,
-                  border: `1px solid rgba(255, 255, 255, 0.2)`,
-                  borderRadius: "18px",
-                  padding: "2rem",
-                  position: "relative",
-                  overflow: "hidden",
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.boxShadow = `0 12px 40px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = `0 4px 20px rgba(0, 0, 0, 0.1)`;
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "30%",
-                    background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)",
-                    borderRadius: "18px 18px 0 0",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "2rem",
-                      marginRight: "1rem",
-                      filter: "drop-shadow(0 0 8px var(--color-accent-glow))",
-                    }}
-                  >
-                    {exp.icon}
-                  </span>
-                  <div>
-                    <h3
-                      style={{
-                        fontSize: "1.3rem",
-                        color: "var(--color-accent)",
-                        marginBottom: "0.25rem",
-                        fontWeight: "600",
-                      }}
-                    >
-                      {exp.role}
-                    </h3>
-                    <p
-                      style={{
-                        color: "var(--color-foreground)",
-                        opacity: 0.8,
-                        fontSize: "1rem",
-                        fontWeight: "500",
-                        margin: 0,
-                      }}
-                    >
-                      {exp.company} • {exp.period}
-                    </p>
                   </div>
-                </div>
-
-                <ul
-                  style={{
-                    margin: 0,
-                    paddingLeft: "1.2rem",
-                    color: "var(--color-foreground)",
-                    opacity: 0.9,
-                    lineHeight: "1.6",
-                    fontSize: "1rem",
-                    listStyle: "disc",
-                  }}
-                >
-                  {exp.points.map((p, i) => (
-                    <li key={i} style={{ marginBottom: "0.5rem" }}>
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Current Interests */}
-        <section style={{ marginBottom: "3rem" }}>
-          <h2
-            style={{
-              fontSize: "2.5rem",
-              textAlign: "center",
-              marginBottom: "2rem",
-              color: "var(--color-accent)",
-              fontWeight: "bold",
-            }}
-          >
-            Current Interests
-          </h2>
-
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              justifyContent: "center",
-            }}
-          >
-            {interests.map((interest, index) => (
-              <div
-                key={interest.name}
-                style={{
-                  backdropFilter: "blur(10px) saturate(180%)",
-                  background: `
-                    linear-gradient(135deg, 
-                      rgba(255, 255, 255, 0.15) 0%, 
-                      var(--color-accent-transparent) 100%
-                    )
-                  `,
-                  border: `1px solid rgba(255, 255, 255, 0.3)`,
-                  borderRadius: "25px",
-                  padding: "0.75rem 1.5rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  transition: "all 0.3s ease",
-                  cursor: "pointer",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-3px) scale(1.05)";
-                  e.currentTarget.style.boxShadow = `0 8px 25px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  e.currentTarget.style.boxShadow = `none`;
-                }}
-              >
-                <span style={{ fontSize: "1.2rem" }}>{interest.icon}</span>
-                <span
-                  style={{
-                    color: "var(--color-foreground)",
-                    fontWeight: "500",
-                    fontSize: "0.95rem",
-                  }}
-                >
-                  {interest.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Goals & Future Vision Section */}
-        <section style={{ marginBottom: "3rem" }}>
-          <div
-            style={{
-              maxWidth: "900px",
-              margin: "0 auto",
-              textAlign: "left",
-            }}
-          >
-            <div style={{ marginBottom: "2.5rem" }}>
-              <h3
-                style={{
-                  fontSize: "1.8rem",
-                  color: "var(--color-accent)",
-                  marginBottom: "1rem",
-                  fontWeight: "600",
-                }}
-              >
-                🎯 Short-Term (1–3 Years)
-              </h3>
-              <p
-                style={{
-                  fontSize: "1.15rem",
-                  lineHeight: "1.8",
-                  color: "var(--color-foreground)",
-                  opacity: 0.9,
-                  marginBottom: "0",
-                }}
-              >
-                I aim to gain broad, hands-on experience in network security,
-                penetration testing, and secure infrastructure design while
-                pursuing advanced cybersecurity certifications. Alongside
-                professional growth, I plan to contribute to open-source
-                security projects and develop tools that make security practices
-                more accessible to small businesses and individuals.
-              </p>
-            </div>
-
-            <div style={{ marginBottom: "2.5rem" }}>
-              <h3
-                style={{
-                  fontSize: "1.8rem",
-                  color: "var(--color-accent)",
-                  marginBottom: "1rem",
-                  fontWeight: "600",
-                }}
-              >
-                🏢 Mid-Term (3–7 Years)
-              </h3>
-              <p
-                style={{
-                  fontSize: "1.15rem",
-                  lineHeight: "1.8",
-                  color: "var(--color-foreground)",
-                  opacity: 0.9,
-                  marginBottom: "0",
-                }}
-              >
-                My goal is to return to the Cayman Islands and establish a
-                security-focused technology firm that provides cutting-edge
-                networking, cybersecurity, and secure data storage solutions.
-                This business will also serve as a training ground for aspiring
-                Caymanian engineers through internships, mentorship, and
-                scholarships.
-              </p>
-            </div>
-
-            <div style={{ marginBottom: "2.5rem" }}>
-              <h3
-                style={{
-                  fontSize: "1.8rem",
-                  color: "var(--color-accent)",
-                  marginBottom: "1rem",
-                  fontWeight: "600",
-                }}
-              >
-                🌍 Long-Term Vision
-              </h3>
-              <p
-                style={{
-                  fontSize: "1.15rem",
-                  lineHeight: "1.8",
-                  color: "var(--color-foreground)",
-                  opacity: 0.9,
-                  marginBottom: "0",
-                }}
-              >
-                I envision creating a multi-purpose technology campus in the
-                Cayman Islands — a hub for innovation, education, and
-                collaboration. The campus will blend secure IT operations with
-                community initiatives such as STEM outreach, maker spaces, and
-                environmental sustainability programs, aiming to leave a lasting
-                positive impact on both the tech industry and the local
-                community.
-              </p>
-            </div>
-
-            <div style={{ textAlign: "center", marginTop: "2rem" }}>
-              <div
-                style={{
-                  display: "inline-block",
-                  background: `
-                    linear-gradient(135deg, 
-                        rgba(255, 255, 255, 0.15) 0%, 
-                        var(--color-accent-transparent) 100%
-                    )
-                    `,
-                  border: `1px solid rgba(255, 255, 255, 0.3)`,
-                  borderRadius: "50px",
-                  padding: "1rem 2rem",
-                  backdropFilter: "blur(10px)",
-                  boxShadow: `0 4px 20px var(--color-accent-glow)`,
-                }}
-              >
-                <span
-                  style={{
-                    color: "var(--color-accent)",
-                    fontWeight: "600",
-                    fontSize: "1.1rem",
-                  }}
-                >
-                  &quot;I wish I could think of a better way to say this, but I want to make a difference.&quot;
-                </span>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-        {/* CTA Section - Link to Timeline */}
-        <section
+      {/* ── Vision ──────────────────────────────────────────────────── */}
+      <section
+        style={{
+          padding: "3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        <SectionLabel>Vision</SectionLabel>
+        <SectionTitle style={{ marginBottom: "1.5rem" }}>
+          Building for the Cayman Islands
+        </SectionTitle>
+
+        <div
           style={{
-            backdropFilter: "blur(20px) saturate(180%)",
-            background: `
-              linear-gradient(135deg, 
-                var(--color-accent-transparent) 0%, 
-                rgba(255, 255, 255, 0.1) 100%
-              )
-            `,
-            border: `1px solid var(--color-accent-border)`,
-            borderRadius: "24px",
-            padding: "3rem",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-            boxShadow: `
-              0 8px 32px var(--color-shadow),
-              0 0 40px var(--color-accent-glow)
-            `,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "3rem",
+            maxWidth: "900px",
           }}
         >
+          <div>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "var(--copper)",
+                marginBottom: "0.75rem",
+              }}
+            >
+              Near-term
+            </div>
+            <p
+              style={{
+                fontSize: "14px",
+                lineHeight: 1.85,
+                color: "var(--text-muted)",
+              }}
+            >
+              Gain broad experience in network security, penetration testing,
+              and secure infrastructure design. Pursue advanced certifications
+              and contribute to open-source security tooling.
+            </p>
+          </div>
+          <div>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "var(--copper)",
+                marginBottom: "0.75rem",
+              }}
+            >
+              Long-term
+            </div>
+            <p
+              style={{
+                fontSize: "14px",
+                lineHeight: 1.85,
+                color: "var(--text-muted)",
+              }}
+            >
+              Return to the Cayman Islands to establish a security-focused
+              technology firm — and eventually a multi-purpose technology campus
+              combining secure infrastructure with STEM education and community
+              initiatives.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────────────────────────── */}
+      <div
+        style={{
+          background: "var(--navy-mid)",
+          border: "0.5px solid var(--border)",
+          borderRadius: "3px",
+          padding: "3rem",
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          gap: "2rem",
+          alignItems: "center",
+          margin: "0 3rem 5rem",
+          maxWidth: "calc(1200px - 6rem)",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        <div>
           <div
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "50%",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%)",
-              borderRadius: "24px 24px 0 0",
-              pointerEvents: "none",
-            }}
-          />
-
-          <h2
-            style={{
-              fontSize: "2.5rem",
-              marginBottom: "1rem",
-              color: "var(--color-accent)",
-              fontWeight: "bold",
+              fontFamily: "var(--font-serif)",
+              fontSize: "1.8rem",
+              color: "var(--cream)",
+              marginBottom: "0.4rem",
             }}
           >
-            Want to Know My Journey?
-          </h2>
-          <p
-            style={{
-              fontSize: "1.2rem",
-              color: "var(--color-foreground)",
-              opacity: 0.9,
-              marginBottom: "2rem",
-              maxWidth: "600px",
-              margin: "0 auto 2rem",
-            }}
-          >
-            Explore my career timeline and see how I evolved from curious
-            beginner to cybersecurity professional.
-          </p>
-          <Link
-            href="/timeline"
-            style={{
-              background: `
-                linear-gradient(135deg, 
-                  var(--color-accent) 0%, 
-                  rgba(255, 255, 255, 0.2) 100%
-                )
-              `,
-              padding: "1rem 2.5rem",
-              borderRadius: "50px",
-              border: `1px solid var(--color-accent-border)`,
-              color: "white",
-              textDecoration: "none",
-              fontWeight: "600",
-              fontSize: "1.1rem",
-              backdropFilter: "blur(10px)",
-              boxShadow: `0 4px 20px var(--color-accent-glow)`,
-              transition: "all 0.3s ease",
-              display: "inline-block",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = "translateY(-3px) scale(1.05)";
-              e.currentTarget.style.boxShadow = `0 8px 30px var(--color-accent-glow)`;
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = "translateY(0) scale(1)";
-              e.currentTarget.style.boxShadow = `0 4px 20px var(--color-accent-glow)`;
-            }}
-          >
-            Explore My Timeline →
-          </Link>
-        </section>
+            Want to connect?
+          </div>
+          <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
+            Open to roles in networking, cybersecurity, and DevOps — graduating
+            May 2026.
+          </div>
+        </div>
+        <Link
+          href="/contact"
+          style={{
+            display: "inline-block",
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            padding: "0.85rem 2rem",
+            background: "var(--copper)",
+            color: "var(--navy)",
+            borderRadius: "2px",
+            transition: "background 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "var(--copper-light)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "var(--copper)")
+          }
+        >
+          Get in touch
+        </Link>
       </div>
-
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-15px) rotate(3deg);
-          }
-        }
-      `}</style>
-    </div>
+    </>
   );
 }

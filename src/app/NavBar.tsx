@@ -1,113 +1,117 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useContext, CSSProperties, useState } from 'react'
-import { ThemeContext } from './ThemeContext'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'About', path: '/about' },
-  //{ name: 'Projects', path: '/projects' },
-  { name: 'Contact', path: '/contact' },
-]
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+];
 
 export default function NavBar() {
-  const pathname = usePathname()
-  const { theme, toggleTheme } = useContext(ThemeContext)
-  const [hoverPos, setHoverPos] = useState<{ [key: string]: CSSProperties }>({})
+  const pathname = usePathname();
 
   return (
-    <header style={{ 
-      padding: '1rem', 
-      borderBottom: '1px solid var(--color-accent-border)',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backdropFilter: 'blur(10px)',
-      background: 'rgba(255, 255, 255, 0.05)'
-    }}>
-      <nav style={{ display: 'flex', gap: '1rem' }}>
-        {navLinks.map((link) => (
-            <Link key={link.name} href={link.path} style={{ textDecoration: 'none' }}>
-                <div
-                onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect()
-                    const x = e.clientX - rect.left
-                    const y = e.clientY - rect.top
-
-                    setHoverPos((prev) => ({
-                    ...prev,
-                    [link.path]: {
-                        background: `radial-gradient(400px circle at ${x}px ${y}px, var(--color-accent-transparent), transparent 80%)`,
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 4px 12px var(--color-accent-glow)',
-                    },
-                    }))
-                }}
-                onMouseLeave={() =>
-                    setHoverPos((prev) => ({
-                    ...prev,
-                    [link.path]: {},
-                    }))
-                }
-                style={{
-                    position: 'relative',
-                    borderRadius: '8px',
-                    padding: '0.5rem 1.25rem',
-                    cursor: 'pointer',
-                    backdropFilter: 'blur(6px)',
-                    border: pathname === link.path
-                        ? '1px solid var(--color-accent-border)'
-                        : '1px solid rgba(255,255,255,0.05)',
-                    background: hoverPos[link.path]?.background ||
-                        (pathname === link.path
-                        ? 'var(--color-accent-bg)'
-                        : 'transparent'),
-                    transform: hoverPos[link.path]?.transform ??
-                        (pathname === link.path ? 'translateY(-1px)' : 'translateY(0)'),
-                    boxShadow: hoverPos[link.path]?.boxShadow ??
-                        (pathname === link.path
-                        ? '0 4px 20px var(--color-accent-glow), inset 0 -2px 0 var(--color-accent)'
-                        : undefined),
-                    transition: 'all 0.2s ease',
-                    color: 'var(--color-foreground)',
-                }}
-                >
-                {link.name}
-                </div>
-            </Link>
-        ))}
-      </nav>
-
-      {/* Apple-style Theme Slider */}
-      <div
-        onClick={toggleTheme}
+    <header
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "1.25rem 3rem",
+        borderBottom: "0.5px solid rgba(184, 115, 51, 0.2)",
+        background: "rgba(11, 29, 46, 0.92)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+      }}
+    >
+      {/* Wordmark */}
+      <Link
+        href="/"
         style={{
-          position: 'relative',
-          width: '60px',
-          height: '32px',
-          borderRadius: '16px',
-          background: 'var(--color-accent)',
-          cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.3)',
+          fontFamily: "var(--font-serif)",
+          fontSize: "18px",
+          color: "var(--copper-light)",
+          letterSpacing: "0.02em",
         }}
       >
-        <div
+        E. Duval
+      </Link>
+
+      {/* Nav links */}
+      <nav style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+        {navLinks.map(({ label, href }) => {
+          const active = pathname === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "11px",
+                fontWeight: 500,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: active ? "var(--copper-bright)" : "var(--text-muted)",
+                transition: "color 0.2s",
+                paddingBottom: active ? "2px" : undefined,
+                borderBottom: active ? "1px solid var(--copper)" : undefined,
+              }}
+            >
+              {label}
+            </Link>
+          );
+        })}
+
+        {/* Resume — external download */}
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
-            position: 'absolute',
-            top: '2px',
-            left: theme === 'dark' ? '2px' : '30px',
-            width: '28px',
-            height: '28px',
-            borderRadius: '50%',
-            background: 'white',
-            transition: 'left 0.3s ease',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--text-muted)",
+            transition: "color 0.2s",
           }}
-        />
-      </div>
+          onMouseEnter={(e) => (e.currentTarget.style.color = "var(--cream)")}
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.color = "var(--text-muted)")
+          }
+        >
+          Résumé ↗
+        </a>
+
+        {/* Contact CTA */}
+        <Link
+          href="/contact"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            padding: "0.5rem 1.1rem",
+            border: "0.5px solid var(--copper)",
+            borderRadius: "2px",
+            color: "var(--copper-bright)",
+            transition: "background 0.2s",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "var(--copper-muted)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "transparent")
+          }
+        >
+          Contact
+        </Link>
+      </nav>
     </header>
-  )
+  );
 }

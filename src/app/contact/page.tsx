@@ -2,8 +2,20 @@
 
 import { useState } from "react";
 
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  background: "var(--navy)",
+  border: "0.5px solid rgba(255,255,255,0.08)",
+  borderRadius: "2px",
+  padding: "0.8rem 1rem",
+  color: "var(--cream)",
+  fontFamily: "var(--font-sans)",
+  fontSize: "14px",
+  outline: "none",
+  transition: "border-color 0.2s",
+};
+
 export default function ContactPage() {
-  const TO = "Ethan@EthanDuval.com"; // <-- set this
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -11,316 +23,359 @@ export default function ContactPage() {
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle"
+    "idle",
   );
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    setError(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form), // name, email, company, message
+        body: JSON.stringify(form),
       });
       const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "Failed to send");
+      if (!res.ok || !data.ok) throw new Error(data.error || "Failed");
       setStatus("sent");
       setForm({ name: "", email: "", company: "", message: "" });
-    } catch (e: unknown) {
+    } catch {
       setStatus("error");
-      setError(e instanceof Error ? e.message : String(e));
     }
   };
 
   return (
-    <div
-      style={{
-        position: "relative",
-        minHeight: "100vh",
-        background: `
-          radial-gradient(circle at 15% 20%, var(--color-accent-transparent) 0%, transparent 50%),
-          radial-gradient(circle at 85% 80%, var(--color-accent-transparent) 0%, transparent 50%),
-          var(--color-background)
-        `,
-        overflow: "hidden",
-      }}
-    >
-      <div
+    <>
+      <section
         style={{
-          position: "relative",
-          zIndex: 10,
-          maxWidth: "1000px",
+          padding: "4rem 3rem 3rem",
+          maxWidth: "800px",
           margin: "0 auto",
-          padding: "2rem",
         }}
       >
         {/* Header */}
-        <section
+        <div
           style={{
-            backdropFilter: "blur(20px) saturate(180%)",
-            background: `
-              linear-gradient(135deg, var(--color-accent-transparent) 0%,
-              rgba(255,255,255,0.1) 50%, transparent 100%)
-            `,
-            border: "1px solid var(--color-accent-border)",
-            borderRadius: "24px",
-            padding: "2.5rem",
-            marginBottom: "2rem",
-            textAlign: "center",
-            boxShadow: `
-              0 8px 32px var(--color-shadow),
-              0 0 40px var(--color-accent-glow)
-            `,
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            fontFamily: "var(--font-mono)",
+            fontSize: "10px",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: "var(--copper)",
+            marginBottom: "1rem",
           }}
         >
-          <h1
+          <span
             style={{
-              fontSize: "3rem",
-              marginBottom: "0.75rem",
-              background: `linear-gradient(135deg, var(--color-accent), var(--color-foreground))`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              fontWeight: "bold",
+              display: "block",
+              width: "24px",
+              height: "1px",
+              background: "var(--copper)",
             }}
-          >
-            Let&apos;s Connect
-          </h1>
-          <p
-            style={{
-              opacity: 0.85,
-              fontSize: "1.15rem",
-              maxWidth: 720,
-              margin: "0 auto",
-            }}
-          >
-            Have a role, project, or question? Send a message! I usually reply
-            within a day.
-          </p>
-        </section>
+          />
+          Contact
+        </div>
+        <h1
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "clamp(2.5rem, 4vw, 3.5rem)",
+            color: "var(--cream)",
+            marginBottom: "1rem",
+            lineHeight: 1.1,
+          }}
+        >
+          Let&apos;s talk
+        </h1>
+        <p
+          style={{
+            fontSize: "15px",
+            lineHeight: 1.8,
+            color: "var(--text-muted)",
+            marginBottom: "3rem",
+            maxWidth: "520px",
+          }}
+        >
+          Open to full-time roles in networking, security, and DevOps. I usually
+          reply within a day.
+        </p>
 
-        {/*quick links + form */}
-        <section
+        <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "2rem",
+            gridTemplateColumns: "1fr 1.5fr",
+            gap: "3rem",
+            alignItems: "start",
           }}
         >
-          {/* Quick contact cards */}
-          <div style={{ display: "grid", gap: "1rem" }}>
-            {[
-              {
-                icon: "✉️",
-                title: "Email",
-                desc: TO,
-                href: `mailto:${TO}`,
-              },
-              {
-                icon: "💼",
-                title: "LinkedIn",
-                desc: "Connect or send a DM",
-                href: "https://www.linkedin.com/in/ethan-duval",
-              },
-              {
-                icon: "🧑‍💻",
-                title: "GitHub",
-                desc: "See code and projects",
-                href: "https://github.com/ethancd19",
-              },
-            ].map((c) => (
-              <a
-                key={c.title}
-                href={c.href}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: "block",
-                  textDecoration: "none",
-                  backdropFilter: "blur(15px) saturate(180%)",
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, var(--color-accent-transparent) 50%, transparent 100%)",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  borderRadius: "16px",
-                  padding: "1rem 1.25rem",
-                  color: "var(--color-foreground)",
-                  transition: "all 0.25s ease",
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = `0 10px 30px var(--color-accent-glow)`;
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                <div style={{ fontSize: "1.4rem" }}>{c.icon}</div>
-                <div
+          {/* Left — links */}
+          <div>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "var(--text-dim)",
+                marginBottom: "1rem",
+              }}
+            >
+              Direct links
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gap: "1px",
+                background: "rgba(255,255,255,0.06)",
+                border: "0.5px solid rgba(255,255,255,0.06)",
+                borderRadius: "3px",
+                overflow: "hidden",
+              }}
+            >
+              {[
+                {
+                  label: "Email",
+                  val: "Ethan@EthanDuval.com",
+                  href: "mailto:Ethan@EthanDuval.com",
+                  copper: false,
+                },
+                {
+                  label: "LinkedIn",
+                  val: "linkedin.com/in/ethan-duval",
+                  href: "https://www.linkedin.com/in/ethan-duval",
+                  copper: true,
+                },
+                {
+                  label: "GitHub",
+                  val: "github.com/ethancd19",
+                  href: "https://github.com/ethancd19",
+                  copper: true,
+                },
+              ].map(({ label, val, href, copper }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    fontWeight: 600,
-                    marginTop: 6,
-                    color: "var(--color-accent)",
+                    display: "block",
+                    background: "var(--navy)",
+                    padding: "1.1rem 1.25rem",
+                    transition: "background 0.2s",
                   }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "var(--navy-mid)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "var(--navy)")
+                  }
                 >
-                  {c.title}
-                </div>
-                <div style={{ opacity: 0.85, marginTop: 4 }}>{c.desc}</div>
-              </a>
-            ))}
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "9px",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: "var(--text-dim)",
+                      marginBottom: "3px",
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: copper ? "var(--copper-light)" : "var(--cream)",
+                    }}
+                  >
+                    {val}
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Mailto form */}
+          {/* Right — form */}
           <form
             onSubmit={onSubmit}
-            style={{
-              backdropFilter: "blur(15px) saturate(180%)",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, var(--color-accent-transparent) 50%, transparent 100%)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "16px",
-              padding: "1.5rem",
-            }}
+            style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}
           >
-            <label
-              style={{ display: "block", fontWeight: 600, marginBottom: 6 }}
-            >
-              Name
-              <input
-                required
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                style={{
-                  width: "100%",
-                  marginTop: 8,
-                  padding: "0.75rem 0.9rem",
-                  borderRadius: 12,
-                  border: "1px solid var(--color-accent-border)",
-                  background: "var(--color-background)",
-                  color: "var(--color-foreground)",
-                }}
-              />
-            </label>
+            <input
+              required
+              placeholder="Your name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              style={inputStyle}
+              onFocus={(e) =>
+                (e.currentTarget.style.borderColor = "var(--copper)")
+              }
+              onBlur={(e) =>
+                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
+              }
+            />
+            <input
+              type="email"
+              required
+              placeholder="Email address"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              style={inputStyle}
+              onFocus={(e) =>
+                (e.currentTarget.style.borderColor = "var(--copper)")
+              }
+              onBlur={(e) =>
+                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
+              }
+            />
+            <input
+              placeholder="Company (optional)"
+              value={form.company}
+              onChange={(e) => setForm({ ...form, company: e.target.value })}
+              style={inputStyle}
+              onFocus={(e) =>
+                (e.currentTarget.style.borderColor = "var(--copper)")
+              }
+              onBlur={(e) =>
+                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
+              }
+            />
+            <textarea
+              required
+              rows={5}
+              placeholder="Message"
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              style={{ ...inputStyle, resize: "vertical" }}
+              onFocus={(e) =>
+                (e.currentTarget.style.borderColor = "var(--copper)")
+              }
+              onBlur={(e) =>
+                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
+              }
+            />
 
-            <label
+            <div
               style={{
-                display: "block",
-                fontWeight: 600,
-                margin: "1rem 0 6px",
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                flexWrap: "wrap",
               }}
             >
-              Company{" "}
-              <span style={{ opacity: 0.6, fontWeight: 400 }}>(optional)</span>
-              <input
-                value={form.company}
-                onChange={(e) => setForm({ ...form, company: e.target.value })}
-                placeholder="e.g., XYZCorp"
+              <button
+                type="submit"
+                disabled={status === "sending"}
                 style={{
-                  width: "100%",
-                  marginTop: 8,
-                  padding: "0.75rem 0.9rem",
-                  borderRadius: 12,
-                  border: "1px solid var(--color-accent-border)",
-                  background: "var(--color-background)",
-                  color: "var(--color-foreground)",
-                }}
-              />
-            </label>
-
-            <label
-              style={{
-                display: "block",
-                fontWeight: 600,
-                margin: "1rem 0 6px",
-              }}
-            >
-              Email
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                style={{
-                  width: "100%",
-                  marginTop: 8,
-                  padding: "0.75rem 0.9rem",
-                  borderRadius: 12,
-                  border: "1px solid var(--color-accent-border)",
-                  background: "var(--color-background)",
-                  color: "var(--color-foreground)",
-                }}
-              />
-            </label>
-
-            <label
-              style={{
-                display: "block",
-                fontWeight: 600,
-                margin: "1rem 0 6px",
-              }}
-            >
-              Message
-              <textarea
-                required
-                rows={6}
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                style={{
-                  width: "100%",
-                  marginTop: 8,
-                  padding: "0.9rem",
-                  borderRadius: 12,
-                  border: "1px solid var(--color-accent-border)",
-                  background: "var(--color-background)",
-                  color: "var(--color-foreground)",
-                  resize: "vertical",
-                }}
-              />
-            </label>
-
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              style={{
-                marginTop: "1rem",
-                width: "100%",
-                opacity: status === "sending" ? 0.8 : 1,
-                cursor: status === "sending" ? "not-allowed" : "pointer",
-                background: `linear-gradient(135deg, var(--color-accent), rgba(255,255,255,0.2))`,
-                padding: "0.9rem 1.2rem",
-                borderRadius: 14,
-                border: "1px solid var(--color-accent-border)",
-                color: "white",
-                fontWeight: 700,
-                boxShadow: `0 6px 24px var(--color-accent-glow)`,
-                transition: "all 0.2s ease",
-              }}
-            >
-              {status === "sending" ? "Sending…" : "Send Message"}
-            </button>
-
-            {status === "sent" && (
-              <p
-                style={{
-                  opacity: 0.85,
-                  color: "var(--color-accent)",
-                  marginTop: 10,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  padding: "0.85rem 2rem",
+                  background:
+                    status === "sending"
+                      ? "var(--copper-muted)"
+                      : "var(--copper)",
+                  color:
+                    status === "sending"
+                      ? "var(--copper-light)"
+                      : "var(--navy)",
+                  border:
+                    status === "sending" ? "0.5px solid var(--copper)" : "none",
+                  borderRadius: "2px",
+                  cursor: status === "sending" ? "not-allowed" : "pointer",
+                  transition: "background 0.2s",
                 }}
               >
-                Thanks! I&apos;ve emailed you a receipt.
-              </p>
-            )}
-            {status === "error" && (
-              <p style={{ opacity: 0.9, color: "#f66", marginTop: 10 }}>
-                Sorry—something went wrong. Please try again.
-              </p>
-            )}
+                {status === "sending" ? "Sending…" : "Send message"}
+              </button>
+
+              {status === "sent" && (
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    color: "#5DBB8A",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Message sent — I&apos;ll be in touch.
+                </span>
+              )}
+              {status === "error" && (
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "11px",
+                    color: "#E07070",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  Something went wrong. Please try again.
+                </span>
+              )}
+            </div>
           </form>
-        </section>
-      </div>
-    </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer
+        style={{
+          padding: "1.75rem 3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "4rem",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "10px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--text-dim)",
+          }}
+        >
+          Ethan Duval © 2026
+        </span>
+        <div style={{ display: "flex", gap: "2rem" }}>
+          {[
+            {
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/in/ethan-duval",
+            },
+            { label: "GitHub", href: "https://github.com/ethancd19" },
+            { label: "Résumé", href: "/resume.pdf" },
+          ].map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--text-dim)",
+                transition: "color 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--copper)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--text-dim)")
+              }
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </footer>
+    </>
   );
 }
