@@ -6,7 +6,7 @@ const focuses = [
   {
     n: "01",
     title: "Network Security",
-    desc: "DNS, DHCP, and IPAM security — hardening enterprise and constrained networks against active threats.",
+    desc: "DNS, DHCP, and IPAM security. Hardening enterprise and constrained networks against active threats.",
   },
   {
     n: "02",
@@ -146,7 +146,7 @@ export default function HomePage() {
           }}
         />
 
-        {/* Left — text */}
+        {/* Left - text */}
         <div>
           <div style={s.eyebrow}>
             <span
@@ -216,7 +216,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Right — identity card */}
+        {/* Right - identity card */}
         <div
           style={{
             display: "flex",
@@ -483,7 +483,8 @@ export default function HomePage() {
             Open to opportunities
           </div>
           <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-            Networking, cybersecurity, and DevOps roles — graduating May 2026.
+            Networking, cybersecurity, DevOps, and software engineering roles.
+            Graduating May 2026.
           </div>
         </div>
         <Link
@@ -528,7 +529,7 @@ export default function HomePage() {
               href: "https://www.linkedin.com/in/ethan-duval",
             },
             { label: "GitHub", href: "https://github.com/ethancd19" },
-            { label: "Résumé", href: "/resume.pdf" },
+            { label: "Resume", href: "/resume.pdf" },
           ].map(({ label, href }) => (
             <a
               key={label}

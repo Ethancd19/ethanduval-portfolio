@@ -40,7 +40,6 @@ export default function NavBar() {
         E. Duval
       </Link>
 
-      {/* Nav links */}
       <nav style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
         {navLinks.map(({ label, href }) => {
           const active = pathname === href;
@@ -65,7 +64,6 @@ export default function NavBar() {
           );
         })}
 
-        {/* Resume — external download */}
         <a
           href="/resume.pdf"
           target="_blank"
@@ -84,10 +82,9 @@ export default function NavBar() {
             (e.currentTarget.style.color = "var(--text-muted)")
           }
         >
-          Résumé ↗
+          Resume &#8599;
         </a>
 
-        {/* Contact CTA */}
         <Link
           href="/contact"
           style={{

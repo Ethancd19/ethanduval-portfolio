@@ -97,8 +97,8 @@ export default function ContactPage() {
             maxWidth: "520px",
           }}
         >
-          Open to full-time roles in networking, security, and DevOps. I usually
-          reply within a day.
+          Open to full-time roles in networking, security, DevOps, and software
+          engineering. I usually reply within a day.
         </p>
 
         <div
@@ -300,7 +300,7 @@ export default function ContactPage() {
                     letterSpacing: "0.08em",
                   }}
                 >
-                  Message sent — I&apos;ll be in touch.
+                  Message sent. I&apos;ll be in touch.
                 </span>
               )}
               {status === "error" && (
@@ -340,7 +340,7 @@ export default function ContactPage() {
             color: "var(--text-dim)",
           }}
         >
-          Ethan Duval © 2026
+          Ethan Duval &copy; 2026
         </span>
         <div style={{ display: "flex", gap: "2rem" }}>
           {[

@@ -121,7 +121,7 @@ export default function AboutPage() {
           I&apos;m a cybersecurity engineer from the Cayman Islands pursuing an
           M.Eng in Secure Information Systems at Virginia Tech. My work spans
           network security, lightweight cryptography research, and secure
-          infrastructure design — driven by a long-term goal of bringing
+          infrastructure design, driven by a long-term goal of bringing
           enterprise-grade capabilities back to the Caribbean.
         </p>
       </section>
@@ -140,13 +140,13 @@ export default function AboutPage() {
         {[
           {
             year: "2026",
-            degree: "M.Eng — Secure Information Systems & Networking",
+            degree: "M.Eng - Secure Information Systems & Networking",
             school: "Virginia Polytechnic Institute and State University",
             note: "Thesis: Benchmarking Lightweight Cryptography on Constrained IoT Hardware",
           },
           {
             year: "2023",
-            degree: "B.S. — Computer Engineering, Networking & Cybersecurity",
+            degree: "B.S. - Computer Engineering, Networking & Cybersecurity",
             school: "Virginia Polytechnic Institute and State University",
             note: null,
           },
@@ -446,7 +446,7 @@ export default function AboutPage() {
               }}
             >
               Return to the Cayman Islands to establish a security-focused
-              technology firm — and eventually a multi-purpose technology campus
+              technology firm and eventually a multi-purpose technology campus
               combining secure infrastructure with STEM education and community
               initiatives.
             </p>
@@ -483,7 +483,7 @@ export default function AboutPage() {
             Want to connect?
           </div>
           <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-            Open to roles in networking, cybersecurity, and DevOps — graduating
+            Open to roles in networking, cybersecurity, and DevOps. Graduating
             May 2026.
           </div>
         </div>
