@@ -17,7 +17,7 @@ const experience = [
     desc: "System hardening through patching and vulnerability remediation. Assisted with incident response and threat monitoring using Wireshark and the ELK Stack.",
   },
   {
-    role: "Risk Advisory Intern",
+    role: "Cyber Security Intern",
     company: "Deloitte",
     period: "2023",
     desc: "Supported cyber risk engagements with client documentation. Conducted control reviews aligned to NIST frameworks and tracked remediation across Windows and AD environments.",
@@ -471,6 +471,36 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Beyond the Work */}
+      <section
+        style={{
+          padding: mobile ? "2.5rem 1.25rem" : "3rem",
+          borderTop: "0.5px solid rgba(255,255,255,0.06)",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        <SectionLabel>Beyond the Work</SectionLabel>
+        <p
+          style={{
+            fontSize: "15px",
+            lineHeight: 1.85,
+            color: "var(--text-muted)",
+            maxWidth: "680px",
+          }}
+        >
+          Outside of security work, I spent two years as a sports photographer
+          with Virginia Tech Athletics, shooting football, soccer, volleyball,
+          softball and more. It was an experience that taught me as much about
+          patience and timing as any engineering course I have completed. I keep
+          a homelab running partly out of necessity and partly out of curiosity,
+          always with something being torn apart or being rebuilt. I also
+          maintain a personal dev tracker for spacecraft releases in Star
+          Citizen, logging each vehicle from announcement through concept to
+          flight-ready. I initially started this as a hobby but it has since
+          turned into a full fledged web application.
+        </p>
+      </section>
       {/* CTA */}
       <div
         style={{

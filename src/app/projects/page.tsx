@@ -21,7 +21,7 @@ const projects: Project[] = [
     title: "Lightweight Cryptography Benchmarking",
     tagline:
       "M.Eng thesis benchmarking NIST LWC finalists on constrained IoT hardware.",
-    year: "2025",
+    year: "2026",
     status: "In Progress",
     tags: ["C", "IoT", "NIST LWC", "Embedded Systems", "Cryptography"],
     summary:
@@ -34,7 +34,7 @@ const projects: Project[] = [
     title: "Virtualized Network Environments",
     tagline:
       "Three production-grade network topologies deployed on a high-spec homelab host.",
-    year: "2024",
+    year: "2025",
     status: "In Progress",
     tags: [
       "pfSense",
@@ -56,7 +56,7 @@ const projects: Project[] = [
     title: "Suicidality and Threat Detection",
     tagline:
       "Transformer-based classifier for detecting suicidal ideation and targeted threats in social text.",
-    year: "2024",
+    year: "2025",
     status: "Academic",
     tags: ["Python", "PyTorch", "Transformers", "NLP", "Class Imbalance"],
     summary:
@@ -70,11 +70,24 @@ const projects: Project[] = [
     ],
   },
   {
+    id: "sc-tracker",
+    title: "Star Citizen Ship Dev Tracker",
+    tagline:
+      "A web app tracking every Star Citizen spacecraft from announcement through concept to flight-ready release.",
+    year: "2025",
+    status: "In Progress",
+    tags: ["TypeScript", "React", "Next.js", "Data Aggregation", "Web App"],
+    summary:
+      "A personal project that started as a spreadsheet and grew into a full web application — tracking the development lifecycle of every vehicle released in Star Citizen, from initial announcement through concept sale to flight-ready status.",
+    detail: `Star Citizen has released hundreds of spacecraft over more than a decade of development, each moving through distinct stages: announcement, concept sale, in-development, and flight-ready. No single resource tracked all of these stages in one place with consistent, structured data.\n\nThis tracker aggregates that information into a queryable web app, with each ship entry logging its announcement date, concept release, development status, and flight-ready date where applicable. The data model is designed to handle the ambiguity of long development cycles — ships that regress in status, get renamed, or are reclassified.\n\nThe frontend is built in Next.js with TypeScript, with a focus on fast filtering and clean information density. The project is currently being populated with complete ship data before public release.`,
+    links: [],
+  },
+  {
     id: "spyware",
     title: "Android Surveillance Toolkit",
     tagline:
       "Proof-of-concept mobile spyware targeting parental devices via a social engineering QR code campaign.",
-    year: "2023",
+    year: "2024",
     status: "Academic",
     tags: [
       "Kotlin",
