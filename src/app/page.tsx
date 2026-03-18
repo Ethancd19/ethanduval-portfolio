@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const focuses = [
   {
@@ -15,7 +16,7 @@ const focuses = [
   },
   {
     n: "03",
-    title: "Risk & Compliance",
+    title: "Risk and Compliance",
     desc: "NIST framework assessments, control reviews, and remediation tracking across enterprise environments.",
   },
 ];
@@ -29,109 +30,62 @@ const tags = [
   { label: "Python", accent: false },
 ];
 
-// ─── shared style objects ───────────────────────────────────────────────────
+const btnPrimary: React.CSSProperties = {
+  display: "inline-block",
+  fontFamily: "var(--font-mono)",
+  fontSize: "11px",
+  fontWeight: 500,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+  padding: "0.85rem 2rem",
+  background: "var(--copper)",
+  color: "var(--navy)",
+  border: "none",
+  borderRadius: "2px",
+  cursor: "pointer",
+  transition: "background 0.2s",
+};
 
-const s = {
-  eyebrow: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.75rem",
-    fontFamily: "var(--font-mono)",
-    fontSize: "10px",
-    letterSpacing: "0.22em",
-    textTransform: "uppercase",
-    color: "var(--copper)",
-    marginBottom: "1.5rem",
-  } as React.CSSProperties,
-
-  heroName: {
-    fontFamily: "var(--font-serif)",
-    fontSize: "clamp(3.5rem, 5.5vw, 5rem)",
-    lineHeight: 1.0,
-    color: "var(--cream)",
-    marginBottom: "1rem",
-  } as React.CSSProperties,
-
-  heroRole: {
-    fontFamily: "var(--font-mono)",
-    fontSize: "11px",
-    letterSpacing: "0.15em",
-    textTransform: "uppercase",
-    color: "var(--text-muted)",
-    marginBottom: "2rem",
-    lineHeight: 2,
-  } as React.CSSProperties,
-
-  btnPrimary: {
-    display: "inline-block",
-    fontFamily: "var(--font-mono)",
-    fontSize: "11px",
-    fontWeight: 500,
-    letterSpacing: "0.12em",
-    textTransform: "uppercase",
-    padding: "0.85rem 2rem",
-    background: "var(--copper)",
-    color: "var(--navy)",
-    border: "none",
-    borderRadius: "2px",
-    cursor: "pointer",
-    transition: "background 0.2s",
-  } as React.CSSProperties,
-
-  btnGhost: {
-    display: "inline-block",
-    fontFamily: "var(--font-mono)",
-    fontSize: "11px",
-    fontWeight: 500,
-    letterSpacing: "0.12em",
-    textTransform: "uppercase",
-    padding: "0.85rem 2rem",
-    background: "transparent",
-    color: "var(--text-muted)",
-    border: "0.5px solid rgba(255,255,255,0.08)",
-    borderRadius: "2px",
-    cursor: "pointer",
-    transition: "all 0.2s",
-  } as React.CSSProperties,
-
-  sectionLabel: {
-    display: "flex",
-    alignItems: "center",
-    gap: "0.75rem",
-    fontFamily: "var(--font-mono)",
-    fontSize: "10px",
-    letterSpacing: "0.25em",
-    textTransform: "uppercase",
-    color: "var(--copper)",
-    marginBottom: "1rem",
-  } as React.CSSProperties,
-
-  sectionTitle: {
-    fontFamily: "var(--font-serif)",
-    fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
-    color: "var(--cream)",
-    marginBottom: "2.5rem",
-    lineHeight: 1.15,
-  } as React.CSSProperties,
+const btnGhost: React.CSSProperties = {
+  display: "inline-block",
+  fontFamily: "var(--font-mono)",
+  fontSize: "11px",
+  fontWeight: 500,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+  padding: "0.85rem 2rem",
+  background: "transparent",
+  color: "var(--text-muted)",
+  border: "0.5px solid rgba(255,255,255,0.08)",
+  borderRadius: "2px",
+  cursor: "pointer",
+  transition: "all 0.2s",
 };
 
 export default function HomePage() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
     <>
-      {/* ── Hero ────────────────────────────────────────────────────── */}
+      {/* Hero */}
       <section
         style={{
-          minHeight: "calc(100vh - 68px)",
+          minHeight: mobile ? "auto" : "calc(100vh - 68px)",
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
           alignItems: "center",
-          padding: "5rem 3rem",
-          gap: "2rem",
+          padding: mobile ? "3rem 1.25rem" : "5rem 3rem",
+          gap: mobile ? "2.5rem" : "2rem",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* Ambient glow */}
         <div
           style={{
             position: "absolute",
@@ -146,9 +100,21 @@ export default function HomePage() {
           }}
         />
 
-        {/* Left - text */}
+        {/* Text */}
         <div>
-          <div style={s.eyebrow}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "var(--copper)",
+              marginBottom: "1.5rem",
+            }}
+          >
             <span
               style={{
                 display: "block",
@@ -160,19 +126,36 @@ export default function HomePage() {
             />
             Cybersecurity Engineer
           </div>
-
-          <h1 style={s.heroName}>
+          <h1
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontSize: mobile
+                ? "clamp(3rem, 12vw, 4.5rem)"
+                : "clamp(3.5rem, 5.5vw, 5rem)",
+              lineHeight: 1.0,
+              color: "var(--cream)",
+              marginBottom: "1rem",
+            }}
+          >
             Ethan
             <br />
             <em style={{ color: "var(--copper-bright)", fontStyle: "italic" }}>
               Duval
             </em>
           </h1>
-
-          <p style={s.heroRole}>
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "11px",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              color: "var(--text-muted)",
+              marginBottom: "2rem",
+              lineHeight: 2,
+            }}
+          >
             M.Eng &nbsp;·&nbsp; Virginia Tech &nbsp;·&nbsp; Cayman Islands
           </p>
-
           <p
             style={{
               fontSize: "15px",
@@ -185,11 +168,10 @@ export default function HomePage() {
             Building secure systems at the intersection of networking,
             cryptography, and resilient infrastructure. Graduating May 2026.
           </p>
-
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             <Link
               href="/about"
-              style={s.btnPrimary}
+              style={btnPrimary}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.background = "var(--copper-light)")
               }
@@ -201,7 +183,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/contact"
-              style={s.btnGhost}
+              style={btnGhost}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "var(--text-muted)";
                 e.currentTarget.style.color = "var(--cream)";
@@ -216,24 +198,24 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Right - identity card */}
+        {/* Identity card */}
         <div
           style={{
             display: "flex",
-            justifyContent: "flex-end",
-            paddingLeft: "3rem",
+            justifyContent: mobile ? "flex-start" : "flex-end",
+            paddingLeft: mobile ? 0 : "3rem",
           }}
         >
           <div
             style={{
-              width: "340px",
+              width: "100%",
+              maxWidth: mobile ? "100%" : "340px",
               border: "0.5px solid var(--border)",
               borderRadius: "3px",
               overflow: "hidden",
-              background: "rgba(17, 37, 56, 0.7)",
+              background: "rgba(17,37,56,0.7)",
             }}
           >
-            {/* Header */}
             <div
               style={{
                 padding: "1.5rem",
@@ -294,8 +276,6 @@ export default function HomePage() {
                 }}
               />
             </div>
-
-            {/* Stats */}
             <div
               style={{
                 display: "grid",
@@ -341,8 +321,6 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-
-            {/* Tags */}
             <div
               style={{
                 padding: "1.1rem",
@@ -375,14 +353,26 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Focus areas ─────────────────────────────────────────────── */}
+      {/* Focus areas */}
       <section
         style={{
-          padding: "5rem 3rem",
+          padding: mobile ? "3rem 1.25rem" : "5rem 3rem",
           borderTop: "0.5px solid rgba(255,255,255,0.06)",
         }}
       >
-        <div style={s.sectionLabel}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            fontFamily: "var(--font-mono)",
+            fontSize: "10px",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: "var(--copper)",
+            marginBottom: "1rem",
+          }}
+        >
           <span
             style={{
               display: "block",
@@ -394,12 +384,21 @@ export default function HomePage() {
           />
           Focus Areas
         </div>
-        <h2 style={s.sectionTitle}>What I work on</h2>
-
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+            color: "var(--cream)",
+            marginBottom: "2.5rem",
+            lineHeight: 1.15,
+          }}
+        >
+          What I work on
+        </h2>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
             gap: "1px",
             background: "rgba(255,255,255,0.06)",
             border: "0.5px solid rgba(255,255,255,0.06)",
@@ -457,18 +456,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── CTA band ────────────────────────────────────────────────── */}
+      {/* CTA */}
       <div
         style={{
           background: "var(--navy-mid)",
           border: "0.5px solid var(--border)",
           borderRadius: "3px",
-          padding: "3rem",
+          padding: mobile ? "2rem" : "3rem",
           display: "grid",
-          gridTemplateColumns: "1fr auto",
+          gridTemplateColumns: mobile ? "1fr" : "1fr auto",
           gap: "2rem",
           alignItems: "center",
-          margin: "0 3rem 5rem",
+          margin: mobile ? "0 1.25rem 3rem" : "0 3rem 5rem",
         }}
       >
         <div>
@@ -483,13 +482,12 @@ export default function HomePage() {
             Open to opportunities
           </div>
           <div style={{ fontSize: "14px", color: "var(--text-muted)" }}>
-            Networking, cybersecurity, DevOps, and software engineering roles.
-            Graduating May 2026.
+            Networking, cybersecurity, and DevOps roles. Graduating May 2026.
           </div>
         </div>
         <Link
           href="/contact"
-          style={s.btnPrimary}
+          style={btnPrimary}
           onMouseEnter={(e) =>
             (e.currentTarget.style.background = "var(--copper-light)")
           }
@@ -501,14 +499,16 @@ export default function HomePage() {
         </Link>
       </div>
 
-      {/* ── Footer ──────────────────────────────────────────────────── */}
+      {/* Footer */}
       <footer
         style={{
-          padding: "1.75rem 3rem",
+          padding: mobile ? "1.5rem 1.25rem" : "1.75rem 3rem",
           borderTop: "0.5px solid rgba(255,255,255,0.06)",
           display: "flex",
+          flexDirection: mobile ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: mobile ? "flex-start" : "center",
+          gap: mobile ? "1rem" : 0,
         }}
       >
         <span
@@ -520,7 +520,7 @@ export default function HomePage() {
             color: "var(--text-dim)",
           }}
         >
-          Ethan Duval © 2026
+          Ethan Duval &copy; 2026
         </span>
         <div style={{ display: "flex", gap: "2rem" }}>
           {[

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Project = {
   id: string;
@@ -26,11 +26,7 @@ const projects: Project[] = [
     tags: ["C", "IoT", "NIST LWC", "Embedded Systems", "Cryptography"],
     summary:
       "Benchmarking the 57 NIST Lightweight Cryptography competition submissions on resource-constrained hardware to evaluate real-world performance tradeoffs for IoT deployments.",
-    detail: `Constrained IoT devices cannot run standard AES-based cryptographic suites due to limited memory and processing power. This thesis builds a hardware benchmarking framework in C that measures execution time, memory footprint, and energy cost for all 57 NIST LWC submissions across three target device classes: microcontrollers, embedded processors, and FPGAs.
-
-The framework automates test vector generation, cycle-accurate timing using hardware counters, and CSV output for statistical analysis. The committee requested extended analysis covering algorithm parameterization and quantitative security characterization, both of which are now incorporated into the final deliverable.
-
-The work references NIST SP 800-232, published August 2025, as its primary normative source and will provide actionable guidance for engineers selecting lightweight ciphers for production IoT deployments.`,
+    detail: `Constrained IoT devices cannot run standard AES-based cryptographic suites due to limited memory and processing power. This thesis builds a hardware benchmarking framework in C that measures execution time, memory footprint, and energy cost for all 57 NIST LWC submissions across three target device classes: microcontrollers, embedded processors, and FPGAs.\n\nThe framework automates test vector generation, cycle-accurate timing using hardware counters, and CSV output for statistical analysis. The committee requested extended analysis covering algorithm parameterization and quantitative security characterization, both of which are now incorporated.\n\nThe work references NIST SP 800-232, published August 2025, as its primary normative source and will provide actionable guidance for engineers selecting lightweight ciphers for production IoT deployments.`,
     links: [],
   },
   {
@@ -40,14 +36,19 @@ The work references NIST SP 800-232, published August 2025, as its primary norma
       "Three production-grade network topologies deployed on a high-spec homelab host.",
     year: "2024",
     status: "In Progress",
-    tags: ["pfSense", "VLANs", "VMware", "Network Security", "DevOps"],
+    tags: [
+      "pfSense",
+      "OPNsense",
+      "VLANs",
+      "OSPF",
+      "BGP",
+      "Snort",
+      "Suricata",
+      "Python",
+    ],
     summary:
-      "A homelab running three distinct virtualized environments, each modelling a real-world deployment scenario with full VLAN segmentation, firewall policy, and monitoring.",
-    detail: `Three isolated network environments run on a single high-specification host machine using VMware virtualization. Each environment targets a distinct threat model and compliance context: a small business network, a multi-tenant apartment complex, and a hospital environment modelled against HIPAA network requirements.
-
-Each environment features full VLAN segmentation, pfSense firewall and routing, IDS/IPS policy, and centralized logging. The hospital environment applies the most restrictive policy set, with separate VLANs for medical devices, clinical workstations, and administration.
-
-This project is actively being expanded. Full environment documentation and architecture diagrams will be published here as each environment reaches a stable configuration.`,
+      "A homelab running three distinct virtualized environments, each modelling a real-world deployment scenario with full VLAN segmentation, firewall policy, IDS/IPS, and Python automation.",
+    detail: `Three isolated network environments run on a single high-specification host machine using VMware virtualization. Each environment targets a distinct threat model and compliance context: a multi-segment enterprise network, a healthcare environment, and a residential network.\n\nAll three feature full VLAN segmentation, pfSense and OPNsense firewalls with inter-VLAN routing, and virtualized routers running OSPF and BGP. Snort and Suricata provide real-time IDS/IPS traffic analysis across each segment. Python automation scripts handle network monitoring, topology discovery, and log parsing.\n\nThis project is actively being expanded. Full documentation and architecture diagrams will be published here as each environment reaches a stable configuration.`,
     links: [],
   },
   {
@@ -60,11 +61,7 @@ This project is actively being expanded. Full environment documentation and arch
     tags: ["Python", "PyTorch", "Transformers", "NLP", "Class Imbalance"],
     summary:
       "An NLP pipeline using fine-tuned transformer models to classify posts containing suicidal ideation or threatening language, with a focus on handling extreme class imbalance in the Jigsaw dataset.",
-    detail: `Built for a graduate machine learning course, this project addresses the real-world challenge of detecting harmful content in large-scale social media streams where positive examples are rare, often under 1% of data.
-
-The pipeline fine-tunes a pre-trained BERT-base model on the Jigsaw Unintended Bias dataset. Standard cross-entropy on imbalanced data produces models that learn to predict the majority class almost exclusively. The solution combines focal loss, minority class oversampling, and threshold tuning to maximize F1 on the positive class without collapsing precision.
-
-Evaluation focused on recall at clinically relevant operating points, given that the cost of a false negative — a missed threat — substantially outweighs a false positive in this domain. The final model achieves meaningful detection capability while remaining practical for a real moderation pipeline.`,
+    detail: `Built for a graduate machine learning course, this project addresses the real-world challenge of detecting harmful content in large-scale social media streams where positive examples are rare, often under 1% of data.\n\nThe pipeline fine-tunes a pre-trained BERT-base model on the Jigsaw Unintended Bias dataset. Standard cross-entropy on imbalanced data produces models that predict the majority class almost exclusively. The solution combines focal loss, minority class oversampling, and threshold tuning to maximize F1 on the positive class without collapsing precision.\n\nEvaluation focused on recall at clinically relevant operating points, given that the cost of a false negative substantially outweighs a false positive in this domain.`,
     links: [
       {
         label: "GitHub",
@@ -88,13 +85,7 @@ Evaluation focused on recall at clinically relevant operating points, given that
     ],
     summary:
       "A controlled academic demonstration of a full mobile attack chain: a social engineering lure site delivered via QR code, targeting teenagers, designed to be installed on a parent's device.",
-    detail: `This project was built as a proof-of-concept for a security course to demonstrate how a complete mobile attack chain works from lure to exfiltration.
-
-The social engineering vector was a fake website offering free in-game currency — Vbucks, Robux — targeted at younger users. The site was distributed via QR code and prompted visitors to install an Android APK on their device, framed as a required step to claim the reward. The assumption was that the target would install it on a parent or guardian\'s phone.
-
-Once installed, the app ran silently in the background with no visible icon or activity. Implemented capabilities included background photography without saving to the camera roll, contact list enumeration, recent SMS message access, and exfiltration of collected data over an encrypted HTTPS channel to a controlled server. The app exploited common permission patterns that users routinely grant without scrutiny.
-
-The project was conducted entirely in a closed lab environment. Its purpose was to understand the attacker perspective well enough to design better defenses: permission auditing, sideloading warnings, and user education around QR code delivery vectors.`,
+    detail: `This project was built as a proof-of-concept for a security course to demonstrate how a complete mobile attack chain works from lure to exfiltration.\n\nThe social engineering vector was a fake website offering free in-game currency targeted at younger users, distributed via QR code. Visitors were prompted to install an Android APK, framed as a required step to claim the reward, intended to be installed on a parent or guardian's phone.\n\nOnce installed, the app ran silently with no visible icon. Capabilities included background photography without saving to the camera roll, contact list enumeration, SMS message access, and exfiltration over encrypted HTTPS to a controlled server.\n\nThe project was conducted entirely in a closed lab environment to understand the attacker perspective and improve defensive controls: permission auditing, sideloading warnings, and education around QR code vectors.`,
     repoNote: "Repository is private for responsible disclosure reasons.",
     links: [],
   },
@@ -105,7 +96,6 @@ const statusColor: Record<Project["status"], string> = {
   "In Progress": "rgba(184,115,51,0.15)",
   Academic: "rgba(100,130,180,0.15)",
 };
-
 const statusText: Record<Project["status"], string> = {
   Complete: "#5DBB8A",
   "In Progress": "var(--copper-light)",
@@ -114,13 +104,28 @@ const statusText: Record<Project["status"], string> = {
 
 export default function ProjectsPage() {
   const [open, setOpen] = useState<string | null>(null);
+  const [mobile, setMobile] = useState(false);
   const active = projects.find((p) => p.id === open) ?? null;
+
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <>
       <section
         style={{
-          padding: "4rem 3rem 3rem",
+          padding: mobile ? "2.5rem 1.25rem 2rem" : "4rem 3rem 3rem",
           maxWidth: "1200px",
           margin: "0 auto",
         }}
@@ -172,11 +177,12 @@ export default function ProjectsPage() {
           projects. Click any card for a full writeup.
         </p>
 
-        {/* Card grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gridTemplateColumns: mobile
+              ? "1fr"
+              : "repeat(auto-fill, minmax(320px, 1fr))",
             gap: "1px",
             background: "rgba(255,255,255,0.06)",
             border: "0.5px solid rgba(255,255,255,0.06)",
@@ -238,7 +244,6 @@ export default function ProjectsPage() {
                   {p.status}
                 </span>
               </div>
-
               <div
                 style={{
                   fontFamily: "var(--font-serif)",
@@ -249,7 +254,6 @@ export default function ProjectsPage() {
               >
                 {p.title}
               </div>
-
               <div
                 style={{
                   fontSize: "13px",
@@ -260,7 +264,6 @@ export default function ProjectsPage() {
               >
                 {p.tagline}
               </div>
-
               <div
                 style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}
               >
@@ -282,7 +285,6 @@ export default function ProjectsPage() {
                   </span>
                 ))}
               </div>
-
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
@@ -300,7 +302,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Case study overlay */}
       {active && (
         <div
           onClick={() => setOpen(null)}
@@ -312,7 +313,7 @@ export default function ProjectsPage() {
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "center",
-            padding: "4rem 1.5rem",
+            padding: mobile ? "1rem" : "4rem 1.5rem",
             overflowY: "auto",
             backdropFilter: "blur(8px)",
             WebkitBackdropFilter: "blur(8px)",
@@ -324,19 +325,19 @@ export default function ProjectsPage() {
               background: "var(--navy-mid)",
               border: "0.5px solid var(--border)",
               borderRadius: "4px",
-              padding: "3rem",
+              padding: mobile ? "1.5rem" : "3rem",
               maxWidth: "760px",
               width: "100%",
               position: "relative",
+              marginTop: mobile ? "60px" : 0,
             }}
           >
-            {/* Close */}
             <button
               onClick={() => setOpen(null)}
               style={{
                 position: "absolute",
-                top: "1.5rem",
-                right: "1.5rem",
+                top: "1rem",
+                right: "1rem",
                 background: "transparent",
                 border: "0.5px solid rgba(255,255,255,0.1)",
                 borderRadius: "2px",
@@ -360,8 +361,6 @@ export default function ProjectsPage() {
             >
               Close &#x2715;
             </button>
-
-            {/* Header */}
             <div
               style={{
                 display: "flex",
@@ -396,11 +395,10 @@ export default function ProjectsPage() {
                 {active.status}
               </span>
             </div>
-
             <h2
               style={{
                 fontFamily: "var(--font-serif)",
-                fontSize: "clamp(1.75rem, 3vw, 2.5rem)",
+                fontSize: mobile ? "1.75rem" : "clamp(1.75rem, 3vw, 2.5rem)",
                 color: "var(--cream)",
                 marginBottom: "1rem",
                 lineHeight: 1.15,
@@ -408,7 +406,6 @@ export default function ProjectsPage() {
             >
               {active.title}
             </h2>
-
             <p
               style={{
                 fontSize: "15px",
@@ -420,7 +417,6 @@ export default function ProjectsPage() {
             >
               {active.summary}
             </p>
-
             <div
               style={{
                 borderTop: "0.5px solid rgba(255,255,255,0.06)",
@@ -428,7 +424,7 @@ export default function ProjectsPage() {
                 marginBottom: "2rem",
               }}
             >
-              {active.detail.split("\n\n").map((para, i) => (
+              {active.detail.split("\\n\\n").map((para, i) => (
                 <p
                   key={i}
                   style={{
@@ -442,8 +438,6 @@ export default function ProjectsPage() {
                 </p>
               ))}
             </div>
-
-            {/* Tags */}
             <div
               style={{
                 display: "flex",
@@ -470,8 +464,6 @@ export default function ProjectsPage() {
                 </span>
               ))}
             </div>
-
-            {/* Repo note */}
             {active.repoNote && (
               <p
                 style={{
@@ -486,8 +478,6 @@ export default function ProjectsPage() {
                 {active.repoNote}
               </p>
             )}
-
-            {/* Links */}
             {active.links.length > 0 && (
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
                 {active.links.map(({ label, href }) => (
@@ -526,11 +516,13 @@ export default function ProjectsPage() {
 
       <footer
         style={{
-          padding: "1.75rem 3rem",
+          padding: mobile ? "1.5rem 1.25rem" : "1.75rem 3rem",
           borderTop: "0.5px solid rgba(255,255,255,0.06)",
           display: "flex",
+          flexDirection: mobile ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: mobile ? "flex-start" : "center",
+          gap: mobile ? "1rem" : 0,
           marginTop: "4rem",
         }}
       >

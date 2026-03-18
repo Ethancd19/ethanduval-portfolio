@@ -41,14 +41,96 @@ body {
   overflow-x: hidden;
 }
 
-/* Global link reset */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Selection */
 ::selection {
   background: rgba(184, 115, 51, 0.3);
   color: var(--cream);
+}
+
+/* ── Responsive helpers ─────────────────────────────────────────── */
+
+/* Section padding scales down on mobile */
+.section-pad {
+  padding: 5rem 3rem;
+}
+
+.section-pad-sm {
+  padding: 4rem 3rem 3rem;
+}
+
+/* 3-col grid collapses to 1 on mobile */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* 2-col grid collapses to 1 on mobile */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+/* Hero 2-col layout */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* CTA band 2-col */
+.cta-band {
+  background: var(--navy-mid);
+  border: 0.5px solid var(--border);
+  border-radius: 3px;
+  padding: 3rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  margin: 0 3rem 5rem;
+}
+
+@media (max-width: 768px) {
+  .section-pad {
+    padding: 3rem 1.25rem;
+  }
+
+  .section-pad-sm {
+    padding: 2.5rem 1.25rem 2rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-band {
+    grid-template-columns: 1fr;
+    margin: 0 1.25rem 3rem;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const experience = [
   {
@@ -48,74 +49,94 @@ const skills = [
   },
 ];
 
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "0.75rem",
-      fontFamily: "var(--font-mono)",
-      fontSize: "10px",
-      letterSpacing: "0.25em",
-      textTransform: "uppercase",
-      color: "var(--copper)",
-      marginBottom: "1rem",
-    }}
-  >
-    <span
-      style={{
-        display: "block",
-        width: "24px",
-        height: "1px",
-        background: "var(--copper)",
-        flexShrink: 0,
-      }}
-    />
-    {children}
-  </div>
-);
+const btnPrimary: React.CSSProperties = {
+  display: "inline-block",
+  fontFamily: "var(--font-mono)",
+  fontSize: "11px",
+  fontWeight: 500,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+  padding: "0.85rem 2rem",
+  background: "var(--copper)",
+  color: "var(--navy)",
+  borderRadius: "2px",
+  transition: "background 0.2s",
+};
 
-const SectionTitle = ({
-  children,
-  style,
-}: {
-  children: React.ReactNode;
-  style?: React.CSSProperties;
-}) => (
-  <h2
-    style={{
-      fontFamily: "var(--font-serif)",
-      fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
-      color: "var(--cream)",
-      marginBottom: "2.5rem",
-      lineHeight: 1.15,
-      ...style,
-    }}
-  >
-    {children}
-  </h2>
-);
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.75rem",
+        fontFamily: "var(--font-mono)",
+        fontSize: "10px",
+        letterSpacing: "0.25em",
+        textTransform: "uppercase",
+        color: "var(--copper)",
+        marginBottom: "1rem",
+      }}
+    >
+      <span
+        style={{
+          display: "block",
+          width: "24px",
+          height: "1px",
+          background: "var(--copper)",
+          flexShrink: 0,
+        }}
+      />
+      {children}
+    </div>
+  );
+}
 
 export default function AboutPage() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const pad = mobile ? "2.5rem 1.25rem" : "3rem";
+  const sectionStyle = {
+    padding: pad,
+    borderTop: "0.5px solid rgba(255,255,255,0.06)",
+    maxWidth: "1200px",
+    margin: "0 auto",
+  };
+
   return (
     <>
-      {/* ── Intro ───────────────────────────────────────────────────── */}
+      {/* Intro */}
       <section
         style={{
-          padding: "4rem 3rem 3rem",
+          padding: mobile ? "2.5rem 1.25rem 2rem" : "4rem 3rem 3rem",
           maxWidth: "1200px",
           margin: "0 auto",
         }}
       >
         <SectionLabel>Background</SectionLabel>
-        <SectionTitle>About me</SectionTitle>
+        <h1
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+            color: "var(--cream)",
+            marginBottom: "2rem",
+            lineHeight: 1.15,
+          }}
+        >
+          About me
+        </h1>
         <p
           style={{
             fontSize: "16px",
             lineHeight: 1.85,
             color: "var(--text-muted)",
             maxWidth: "680px",
-            marginBottom: "0",
           }}
         >
           I&apos;m a cybersecurity engineer from the Cayman Islands pursuing an
@@ -126,27 +147,20 @@ export default function AboutPage() {
         </p>
       </section>
 
-      {/* ── Education ───────────────────────────────────────────────── */}
-      <section
-        style={{
-          padding: "3rem",
-          borderTop: "0.5px solid rgba(255,255,255,0.06)",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      {/* Education */}
+      <section style={sectionStyle}>
         <SectionLabel>Education</SectionLabel>
-
         {[
           {
             year: "2026",
-            degree: "M.Eng - Secure Information Systems & Networking",
+            degree: "M.Eng in Secure Information Systems and Networking",
             school: "Virginia Polytechnic Institute and State University",
             note: "Thesis: Benchmarking Lightweight Cryptography on Constrained IoT Hardware",
           },
           {
             year: "2023",
-            degree: "B.S. - Computer Engineering, Networking & Cybersecurity",
+            degree:
+              "B.S. in Computer Engineering, Networking and Cybersecurity",
             school: "Virginia Polytechnic Institute and State University",
             note: null,
           },
@@ -155,9 +169,9 @@ export default function AboutPage() {
             key={year}
             style={{
               display: "grid",
-              gridTemplateColumns: "64px 1fr",
-              gap: "0 2rem",
-              padding: "1.75rem 0",
+              gridTemplateColumns: "60px 1fr",
+              gap: "0 1.5rem",
+              padding: "1.5rem 0",
               borderBottom: "0.5px solid rgba(255,255,255,0.06)",
             }}
           >
@@ -210,18 +224,20 @@ export default function AboutPage() {
         ))}
       </section>
 
-      {/* ── Experience ──────────────────────────────────────────────── */}
-      <section
-        style={{
-          padding: "3rem",
-          borderTop: "0.5px solid rgba(255,255,255,0.06)",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      {/* Experience */}
+      <section style={sectionStyle}>
         <SectionLabel>Experience</SectionLabel>
-        <SectionTitle>Professional history</SectionTitle>
-
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+            color: "var(--cream)",
+            marginBottom: "2.5rem",
+            lineHeight: 1.15,
+          }}
+        >
+          Professional history
+        </h2>
         <div
           style={{
             display: "grid",
@@ -239,8 +255,8 @@ export default function AboutPage() {
                 background: "var(--navy)",
                 padding: "1.75rem 2rem",
                 display: "grid",
-                gridTemplateColumns: "1fr auto",
-                gap: "1rem",
+                gridTemplateColumns: mobile ? "1fr" : "1fr auto",
+                gap: mobile ? "0.5rem" : "1rem",
                 transition: "background 0.2s",
               }}
               onMouseEnter={(e) =>
@@ -289,7 +305,6 @@ export default function AboutPage() {
                   fontSize: "11px",
                   color: "var(--text-dim)",
                   whiteSpace: "nowrap",
-                  paddingTop: "2px",
                 }}
               >
                 {period}
@@ -299,22 +314,24 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Skills ──────────────────────────────────────────────────── */}
-      <section
-        style={{
-          padding: "3rem",
-          borderTop: "0.5px solid rgba(255,255,255,0.06)",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      {/* Skills */}
+      <section style={sectionStyle}>
         <SectionLabel>Technical Skills</SectionLabel>
-        <SectionTitle>Expertise</SectionTitle>
-
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+            color: "var(--cream)",
+            marginBottom: "2.5rem",
+            lineHeight: 1.15,
+          }}
+        >
+          Expertise
+        </h2>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
             gap: "1px",
             background: "rgba(255,255,255,0.06)",
             border: "0.5px solid rgba(255,255,255,0.06)",
@@ -378,25 +395,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── Vision ──────────────────────────────────────────────────── */}
-      <section
-        style={{
-          padding: "3rem",
-          borderTop: "0.5px solid rgba(255,255,255,0.06)",
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
+      {/* Vision */}
+      <section style={sectionStyle}>
         <SectionLabel>Vision</SectionLabel>
-        <SectionTitle style={{ marginBottom: "1.5rem" }}>
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+            color: "var(--cream)",
+            marginBottom: "1.5rem",
+            lineHeight: 1.15,
+          }}
+        >
           Building for the Cayman Islands
-        </SectionTitle>
-
+        </h2>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "3rem",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: mobile ? "2rem" : "3rem",
             maxWidth: "900px",
           }}
         >
@@ -454,21 +471,18 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── CTA ─────────────────────────────────────────────────────── */}
+      {/* CTA */}
       <div
         style={{
           background: "var(--navy-mid)",
           border: "0.5px solid var(--border)",
           borderRadius: "3px",
-          padding: "3rem",
+          padding: mobile ? "2rem" : "3rem",
           display: "grid",
-          gridTemplateColumns: "1fr auto",
+          gridTemplateColumns: mobile ? "1fr" : "1fr auto",
           gap: "2rem",
           alignItems: "center",
-          margin: "0 3rem 5rem",
-          maxWidth: "calc(1200px - 6rem)",
-          marginLeft: "auto",
-          marginRight: "auto",
+          margin: mobile ? "2rem 1.25rem 3rem" : "2rem 3rem 5rem",
         }}
       >
         <div>
@@ -489,19 +503,7 @@ export default function AboutPage() {
         </div>
         <Link
           href="/contact"
-          style={{
-            display: "inline-block",
-            fontFamily: "var(--font-mono)",
-            fontSize: "11px",
-            fontWeight: 500,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            padding: "0.85rem 2rem",
-            background: "var(--copper)",
-            color: "var(--navy)",
-            borderRadius: "2px",
-            transition: "background 0.2s",
-          }}
+          style={btnPrimary}
           onMouseEnter={(e) =>
             (e.currentTarget.style.background = "var(--copper-light)")
           }

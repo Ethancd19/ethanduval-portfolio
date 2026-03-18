@@ -1,19 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  background: "var(--navy)",
-  border: "0.5px solid rgba(255,255,255,0.08)",
-  borderRadius: "2px",
-  padding: "0.8rem 1rem",
-  color: "var(--cream)",
-  fontFamily: "var(--font-sans)",
-  fontSize: "14px",
-  outline: "none",
-  transition: "border-color 0.2s",
-};
+import { useState, useEffect } from "react";
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -25,6 +12,27 @@ export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle",
   );
+  const [mobile, setMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: "var(--navy)",
+    border: "0.5px solid rgba(255,255,255,0.08)",
+    borderRadius: "2px",
+    padding: "0.8rem 1rem",
+    color: "var(--cream)",
+    fontFamily: "var(--font-sans)",
+    fontSize: "14px",
+    outline: "none",
+    transition: "border-color 0.2s",
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,12 +56,11 @@ export default function ContactPage() {
     <>
       <section
         style={{
-          padding: "4rem 3rem 3rem",
+          padding: mobile ? "2.5rem 1.25rem 2rem" : "4rem 3rem 3rem",
           maxWidth: "800px",
           margin: "0 auto",
         }}
       >
-        {/* Header */}
         <div
           style={{
             display: "flex",
@@ -97,19 +104,18 @@ export default function ContactPage() {
             maxWidth: "520px",
           }}
         >
-          Open to full-time roles in networking, security, DevOps, and software
-          engineering. I usually reply within a day.
+          Open to full-time roles in networking, security, and DevOps. I usually
+          reply within a day.
         </p>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "3rem",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1.5fr",
+            gap: mobile ? "2rem" : "3rem",
             alignItems: "start",
           }}
         >
-          {/* Left — links */}
           <div>
             <div
               style={{
@@ -196,7 +202,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Right — form */}
           <form
             onSubmit={onSubmit}
             style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}
@@ -254,7 +259,6 @@ export default function ContactPage() {
                 (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")
               }
             />
-
             <div
               style={{
                 display: "flex",
@@ -288,9 +292,8 @@ export default function ContactPage() {
                   transition: "background 0.2s",
                 }}
               >
-                {status === "sending" ? "Sending…" : "Send message"}
+                {status === "sending" ? "Sending..." : "Send message"}
               </button>
-
               {status === "sent" && (
                 <span
                   style={{
@@ -320,14 +323,15 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer
         style={{
-          padding: "1.75rem 3rem",
+          padding: mobile ? "1.5rem 1.25rem" : "1.75rem 3rem",
           borderTop: "0.5px solid rgba(255,255,255,0.06)",
           display: "flex",
+          flexDirection: mobile ? "column" : "row",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: mobile ? "flex-start" : "center",
+          gap: mobile ? "1rem" : 0,
           marginTop: "4rem",
         }}
       >
@@ -349,7 +353,7 @@ export default function ContactPage() {
               href: "https://www.linkedin.com/in/ethan-duval",
             },
             { label: "GitHub", href: "https://github.com/ethancd19" },
-            { label: "Résumé", href: "/resume.pdf" },
+            { label: "Resume", href: "/resume.pdf" },
           ].map(({ label, href }) => (
             <a
               key={label}
