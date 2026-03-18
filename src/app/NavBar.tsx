@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
 ];
 
 export default function NavBar() {
@@ -27,7 +28,6 @@ export default function NavBar() {
         WebkitBackdropFilter: "blur(16px)",
       }}
     >
-      {/* Wordmark */}
       <Link
         href="/"
         style={{
