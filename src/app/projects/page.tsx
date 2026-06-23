@@ -17,17 +17,27 @@ type Project = {
 
 const projects: Project[] = [
   {
-    id: "lwc",
-    title: "Lightweight Cryptography Benchmarking",
+    id: "orbit",
+    title: "ORBIT: Cryptographic Benchmarking for Embedded Systems",
     tagline:
-      "M.Eng thesis benchmarking NIST LWC finalists on constrained IoT hardware.",
+      "M.Eng thesis benchmarking lightweight and post-quantum ciphers across five embedded platforms.",
     year: "2026",
-    status: "In Progress",
-    tags: ["C", "IoT", "NIST LWC", "Embedded Systems", "Cryptography"],
+    status: "Complete",
+    tags: [
+      "C",
+      "Embedded Systems",
+      "Cryptography",
+      "Post-Quantum",
+      "IoT",
+      "Benchmarking",
+    ],
     summary:
-      "Benchmarking the 57 NIST Lightweight Cryptography competition submissions on resource-constrained hardware to evaluate real-world performance tradeoffs for IoT deployments.",
-    detail: `Constrained IoT devices cannot run standard AES-based cryptographic suites due to limited memory and processing power. This thesis builds a hardware benchmarking framework in C that measures execution time, memory footprint, and energy cost for all 57 NIST LWC submissions across three target device classes: microcontrollers, embedded processors, and FPGAs.\n\nThe framework automates test vector generation, cycle-accurate timing using hardware counters, and CSV output for statistical analysis. The committee requested extended analysis covering algorithm parameterization and quantitative security characterization, both of which are now incorporated.\n\nThe work references NIST SP 800-232, published August 2025, as its primary normative source and will provide actionable guidance for engineers selecting lightweight ciphers for production IoT deployments.`,
-    links: [],
+      "A unified framework for measuring the runtime, memory, and energy cost of lightweight and post-quantum cryptography on constrained hardware, benchmarking Ascon, GIFT-COFB, AES-GCM, and ML-KEM-512 across five embedded platforms.",
+    detail: `Constrained embedded devices cannot always absorb the cost of standard cryptographic suites, and the move toward post-quantum primitives raises new questions about whether these algorithms are viable on small hardware at all. ORBIT is a benchmarking framework built to answer that empirically rather than from datasheet estimates.\n\nThe framework measures execution time, memory footprint, and energy cost for a focused set of algorithms: Ascon and GIFT-COFB from the NIST Lightweight Cryptography effort, AES-GCM as the conventional baseline, and ML-KEM-512 as a representative post-quantum KEM. Each is run across five target boards spanning a wide capability range: the RP2040, nRF52840, STM32, ESP32-C6, and Raspberry Pi 5.\n\nA common harness handles test vector generation, cycle-accurate timing using on-chip counters, and structured CSV output for cross-platform statistical analysis, so results stay comparable even as the underlying silicon changes. The work gives engineers concrete guidance on which ciphers remain practical as devices shrink and as post-quantum requirements arrive.\n\nThe full thesis is available to read below.`,
+    links: [
+      { label: "GitHub", href: "https://github.com/Ethancd19/ORBIT" },
+      { label: "Read the Thesis", href: "/orbit-thesis.pdf" },
+    ],
   },
   {
     id: "homelab",
@@ -50,6 +60,29 @@ const projects: Project[] = [
       "A homelab running three distinct virtualized environments, each modelling a real-world deployment scenario with full VLAN segmentation, firewall policy, IDS/IPS, and Python automation.",
     detail: `Three isolated network environments run on a single high-specification host machine using VMware virtualization. Each environment targets a distinct threat model and compliance context: a multi-segment enterprise network, a healthcare environment, and a residential network.\n\nAll three feature full VLAN segmentation, pfSense and OPNsense firewalls with inter-VLAN routing, and virtualized routers running OSPF and BGP. Snort and Suricata provide real-time IDS/IPS traffic analysis across each segment. Python automation scripts handle network monitoring, topology discovery, and log parsing.\n\nThis project is actively being expanded. Full documentation and architecture diagrams will be published here as each environment reaches a stable configuration.`,
     links: [],
+  },
+  {
+    id: "crows-nest",
+    title: "Crow's Nest",
+    tagline:
+      "A privacy-first wishlist app built with React Native and Supabase.",
+    year: "2026",
+    status: "In Progress",
+    tags: [
+      "React Native",
+      "Expo",
+      "Supabase",
+      "TypeScript",
+      "RLS",
+      "Mobile App",
+    ],
+    summary:
+      "A privacy-first wishlist app that lets people keep and share lists without surrendering their data to a retailer or ad network, built cross-platform with React Native and Expo on a Supabase backend.",
+    detail: `Most wishlist tools exist to feed a store's recommendation engine. Crow's Nest is built on the opposite premise: lists are personal, sharing should be deliberate, and the data should stay with the person who created it.\n\nThe app is cross-platform via React Native and Expo, with a Supabase backend handling auth, storage, and real-time sync. Multi-user sharing is enforced at the database layer through row-level security policies, so a shared list exposes exactly what the owner intends and nothing else. The interface includes a full theme system with multiple palettes, a folder-tile home screen, and a three-tab navigation structure.\n\nThe project is co-designed and actively in development. A public landing page at getcrowsnest.app is in progress.`,
+    links: [
+      { label: "GitHub", href: "https://github.com/Ethancd19/crows-nest" },
+    ],
+    repoNote: "Landing page at getcrowsnest.app is in progress.",
   },
   {
     id: "suicidality",
@@ -81,6 +114,7 @@ const projects: Project[] = [
       "A personal project that started as a spreadsheet and grew into a full web application — tracking the development lifecycle of every vehicle released in Star Citizen, from initial announcement through concept sale to flight-ready status.",
     detail: `Star Citizen has released hundreds of spacecraft over more than a decade of development, each moving through distinct stages: announcement, concept sale, in-development, and flight-ready. No single resource tracked all of these stages in one place with consistent, structured data.\n\nThis tracker aggregates that information into a queryable web app, with each ship entry logging its announcement date, concept release, development status, and flight-ready date where applicable. The data model is designed to handle the ambiguity of long development cycles — ships that regress in status, get renamed, or are reclassified.\n\nThe frontend is built in Next.js with TypeScript, with a focus on fast filtering and clean information density. The project is currently being populated with complete ship data before public release.`,
     links: [],
+    repoNote: "Check back for a public release once the database is complete.",
   },
   {
     id: "spyware",
