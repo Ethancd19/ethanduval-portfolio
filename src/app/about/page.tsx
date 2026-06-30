@@ -250,7 +250,7 @@ export default function AboutPage() {
         >
           {experience.map(({ role, company, period, desc }) => (
             <div
-              key={role}
+              key={`${company}-${period}`}
               style={{
                 background: "var(--navy)",
                 padding: "1.75rem 2rem",

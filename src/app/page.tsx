@@ -77,11 +77,10 @@ export default function HomePage() {
       <section
         style={{
           minHeight: mobile ? "auto" : "calc(100vh - 68px)",
-          display: "grid",
-          gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+          display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           padding: mobile ? "3rem 1.25rem" : "5rem 3rem",
-          gap: mobile ? "2.5rem" : "2rem",
           position: "relative",
           overflow: "hidden",
         }}
@@ -100,6 +99,17 @@ export default function HomePage() {
           }}
         />
 
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "1080px",
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 340px",
+            alignItems: "center",
+            gap: mobile ? "2.5rem" : "4rem",
+            position: "relative",
+          }}
+        >
         {/* Text */}
         <div>
           <div
@@ -202,8 +212,7 @@ export default function HomePage() {
         <div
           style={{
             display: "flex",
-            justifyContent: mobile ? "flex-start" : "flex-end",
-            paddingLeft: mobile ? 0 : "3rem",
+            justifyContent: mobile ? "flex-start" : "stretch",
           }}
         >
           <div
@@ -351,6 +360,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        </div>
       </section>
 
       {/* Focus areas */}
@@ -360,6 +370,7 @@ export default function HomePage() {
           borderTop: "0.5px solid rgba(255,255,255,0.06)",
         }}
       >
+        <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <div
           style={{
             display: "flex",
@@ -454,9 +465,11 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
       {/* CTA */}
+      <div style={{ padding: mobile ? "0 1.25rem" : "0 3rem" }}>
       <div
         style={{
           background: "var(--navy-mid)",
@@ -467,7 +480,8 @@ export default function HomePage() {
           gridTemplateColumns: mobile ? "1fr" : "1fr auto",
           gap: "2rem",
           alignItems: "center",
-          margin: mobile ? "0 1.25rem 3rem" : "0 3rem 5rem",
+          maxWidth: "1080px",
+          margin: mobile ? "0 0 3rem" : "0 auto 5rem",
         }}
       >
         <div>
@@ -497,6 +511,7 @@ export default function HomePage() {
         >
           Reach out
         </Link>
+      </div>
       </div>
 
       {/* Footer */}
